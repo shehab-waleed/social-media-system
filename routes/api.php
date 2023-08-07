@@ -1,0 +1,48 @@
+<?php
+
+use App\Http\Controllers\Api\CommentController;
+use App\Http\Controllers\Api\PostController;
+use App\Http\Controllers\Api\NotificationController;
+use App\Http\Controllers\Api\RegisterController;
+use App\Http\Controllers\Api\SessionController;
+use App\Http\Controllers\Api\UserController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| API Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register API routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "api" middleware group. Make something great!
+|
+*/
+
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+//--- Auth module
+Route::post('login', [SessionController::class, 'store'])->name('login');
+Route::post('logout', [SessionController::class, 'destroy'])->middleware('auth:sanctum');
+Route::post('register', [RegisterController::class, 'store']);
+
+//--- Posts module
+Route::resource('posts', PostController::class)->middleware('auth:sanctum');
+Route::prefix('posts')->group(function () {
+    Route::get('latest', [PostController::class, 'latest']);
+    // Route::delete('posts/{userId}/delete-all', [PostController::class, 'destroyAll']);
+});
+
+//--- Comments module
+Route::get('comments/{postId}', [CommentController::class , 'index']);
+Route::resource('comments', CommentController::class)->only('store', 'destroy')->middleware('auth:sanctum');
+
+//--- User module
+Route::resource('users', UserController::class)->middleware(['auth:sanctum', 'can:admin']);
+
+//--- Noficications module
+Route::get('notifications/{userId}', [NotificationController::class, 'index']);
+Route::get('notifications/{userId}/read-all', [NotificationController::class, 'readAll']);
