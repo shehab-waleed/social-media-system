@@ -35,14 +35,14 @@ class StoreRegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
             'first_name' => ['string' , 'required' , 'min:3' , 'max:24'],
             'last_name' => ['string' , 'required' , 'min:3' , 'max:24'],
             'username' => ['string' ,'unique:users,username' , 'required' , 'min:3' , 'max:24'],
             'email' => ['email' , 'required' ,'unique:users,email'],
+            'country' => ['required'],
             'password' => ['required', 'confirmed' , Rules\Password::defaults()],
-            'is_admin' => ['boolean']
-
+            'is_admin' => ['boolean'],
+            'photo' => ['image']
         ];
     }
 }

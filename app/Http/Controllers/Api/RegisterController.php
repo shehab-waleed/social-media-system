@@ -11,58 +11,23 @@ use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreRegisterRequest $request)
     {
-        //
-        $user = User::create([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'username' => $request->username,
-            'email' => $request->email,
-            'password' => $request->password,
-            'is_admin' => $request->is_admin ?? 0
-        ]);
+        if ($request->has('photo')) {
+            $photoPath = $request->file('photo')->store('photos');
+            $validatedData['photo'] = $photoPath;
+        }
+        $validatedData = $request->validated();
 
-        $data['Token'] = $user->createToken('userToken')->plainTextToken;
-        $data['First Name'] = $user->first_name;
-        $data['Last Name'] = $user->last_name;
-        $data['Email'] = $user->email;
+        $user = User::create($validatedData);
+        $user->token = $user->createToken('userToken')->plainTextToken;
+        $user->photo = $photoPath ?? null;
 
-        return ApiResponse::send(201, 'User registered successfully .', $data);
+        return ApiResponse::send(201, 'User registered successfully .', new UserResource($user));
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 }
