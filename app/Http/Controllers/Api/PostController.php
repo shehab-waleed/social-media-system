@@ -11,6 +11,7 @@ use App\Jobs\DeleteUserPosts;
 use App\Models\Post;
 use App\Models\PostImages;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Gate;
 
 class PostController extends Controller
@@ -124,7 +125,7 @@ class PostController extends Controller
     public function destroy(Request $request, $id)
     {
         //
-        $post = Post::find($id);
+        $post = Post::with('images')->find($id);
 
         if (!$post)
             return ApiResponse::send(200, 'Post not found', []);
@@ -132,20 +133,12 @@ class PostController extends Controller
         if (!auth()->user()->can('has-post', $post))
             return ApiResponse::send(403, 'You are not authorized to take this action', []);
 
+        foreach($post->images as $element){
+            Storage::delete($element->image);
+            $element->delete();
+        }
         $post->delete();
         return ApiResponse::send(200, 'Post deleted successfully . ', []);
     }
 
-
-    // This is an excersise for queue concept
-    // public function destroyAll(int $userId)
-    // {
-    //     $posts = Post::where('user_id', $userId)->get();
-
-    //     if ($posts->count() == 0)
-    //         return ApiResponse::send(200, 'User has not posts', []);
-
-    //     DeleteUserPosts::dispatch($userId);
-    //     return ApiResponse::send(200, 'Your request processing .', []);
-    // }
 }

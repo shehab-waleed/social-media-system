@@ -20,7 +20,7 @@ class CommentController extends Controller
      */
     public function index($postId)
     {
-        //
+
         $post = Post::with('comments')->find($postId);
         if (! $post)
             return ApiResponse::send(200, 'Post not found', []);
@@ -56,20 +56,26 @@ class CommentController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
     {
-        //
+        $commentNewData = $request->validate([
+            'body' => ['required' , 'string']
+        ]);
+
+        $comment = Comment::with('author')->find($id);
+        if (!auth()->user()->can('has-comment', $comment))
+            return ApiResponse::send(403, 'You are not allowed to take this action');
+
+        if (!$comment)
+            return ApiResponse::send(200, 'Comment not found', null);
+
+        $comment->update($commentNewData);
+        return ApiResponse::send(200, 'Comment updated successfully .', new CommentResource($comment));
+
     }
 
     /**

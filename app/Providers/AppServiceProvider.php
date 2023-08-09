@@ -21,7 +21,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
 
         Gate::define('has-post', function ($user, $post) {
             return $user->id == $post->user_id;
