@@ -20,8 +20,8 @@ class PostResource extends JsonResource
             'Content' => $this->body,
             'User Id' => $this->user_id,
             'Author' => $this->author->first_name . ' ' . $this->author->last_name,
+            'Images Urls' => $this->images ? $this->images->pluck('image') : null,
         ];
-
         if ($this->comments->count() > 0) {
             $data['Comments'] = CommentResource::collection($this->comments);
         }

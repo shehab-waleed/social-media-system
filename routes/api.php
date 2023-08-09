@@ -24,27 +24,26 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-//--- Auth module
+//--- Auth module ---
 Route::post('login', [SessionController::class, 'store'])->name('login');
 Route::post('logout', [SessionController::class, 'destroy'])->middleware('auth:sanctum');
 Route::post('register', [RegisterController::class, 'store']);
 
-//--- Posts module
+//--- Posts module ---
 Route::apiResource('posts', PostController::class)->middleware('auth:sanctum');
 Route::prefix('posts')->group(function () {
-    Route::get('latest', [PostController::class, 'latest']);
-    // Route::delete('posts/{userId}/delete-all', [PostController::class, 'destroyAll']);
+    Route::get('latest', [PostController::class, 'latest'])->middleware('auth:sanctum');
 });
 
-//--- Comments module
+//--- Comments module ---
 Route::get('comments/{postId}', [CommentController::class, 'index']);
 Route::apiResource('comments', CommentController::class)->only('store', 'destroy')->middleware('auth:sanctum');
 
-//--- Noficications module
+//--- Noficications module ---
 Route::get('notifications/{userId}', [NotificationController::class, 'index']);
 Route::get('notifications/{userId}/read-all', [NotificationController::class, 'readAll']);
 
-//--- Admin module
+//--- Admin module ---
 Route::prefix('admin')->group(function () {
     Route::apiResource('users', UserController::class)->middleware(['auth:sanctum', 'can:admin']);
 })->middleware(['auth:sanctum', 'can:admin']);

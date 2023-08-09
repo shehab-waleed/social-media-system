@@ -9,6 +9,7 @@ use App\Http\Requests\UpdatePostRequest;
 use App\Http\Resources\PostResource;
 use App\Jobs\DeleteUserPosts;
 use App\Models\Post;
+use App\Models\PostImages;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -20,7 +21,7 @@ class PostController extends Controller
     public function index()
     {
         //
-        $posts = Post::latest()->filter(request(['user_id', 'content']))->with('author', 'comments')->paginate(100);
+        $posts = Post::latest()->filter(request(['user_id', 'title']))->with('author', 'comments', 'images')->paginate(10);
         if (count($posts) > 0) {
             if ($posts->total() > $posts->perPage()) {
                 $data = [
@@ -59,11 +60,22 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        //
         $postData = $request->validated();
         $postData['user_id'] = $request->user()->id;
+        unset($postData['images']);
 
         $record = Post::create($postData);
+
+        if ($request->has('images')) {
+            foreach ($request->file('images') as $image) {
+                $imagePath = $image->store('post_images');
+                PostImages::create([
+                    'post_id' => $record->id,
+                    'image' => $imagePath
+                ]);
+            }
+
+        }
 
         if ($record) {
             return ApiResponse::send(201, 'Post created successfully .', new PostResource($record));
@@ -77,7 +89,12 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $post = Post::with('author', 'comments', 'images')->find($id);
+
+        if (! $post)
+            return ApiResponse::send(200, 'Post not found', null);
+
+        return ApiResponse::send(200, 'Post retireved successfully . ', new PostResource($post));
     }
 
     /**
@@ -109,10 +126,10 @@ class PostController extends Controller
         //
         $post = Post::find($id);
 
-        if (! $post)
+        if (!$post)
             return ApiResponse::send(200, 'Post not found', []);
 
-        if (! auth()->user()->can('has-post', $post))
+        if (!auth()->user()->can('has-post', $post))
             return ApiResponse::send(403, 'You are not authorized to take this action', []);
 
         $post->delete();

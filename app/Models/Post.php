@@ -16,8 +16,8 @@ class Post extends Model
             $query->where('user_id', $user_id);
         });
 
-        $query->when($filters['content'] ?? false, function ($query, $title) {
-            $query->where('content', 'like', '%' . $title . '%');
+        $query->when($filters['title'] ?? false, function ($query, $title) {
+            $query->where('title', 'like', '%' . $title . '%');
         });
 
     }
@@ -28,6 +28,10 @@ class Post extends Model
 
     public function comments(){
         return $this->hasMany(Comment::class);
+    }
+
+    public function images(){
+        return $this->hasMany(PostImages::class);
     }
 
 }

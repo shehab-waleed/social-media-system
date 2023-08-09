@@ -36,6 +36,7 @@ class StorePostRequest extends FormRequest
         return [
             'title' => ['required' , 'min:3' , 'max:30'],
             'body' => ['required' , 'min:3' , 'max:255'],
+            'images.*' => ['image'],
         ];
     }
 }
