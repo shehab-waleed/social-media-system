@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\CommentController;
-use App\Http\Controllers\api\LikeController;
+use App\Http\Controllers\Api\LikeController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\RegisterController;
