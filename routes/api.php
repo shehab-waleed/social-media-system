@@ -1,6 +1,5 @@
 <?php
 
-<<<<<<< HEAD
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\api\LikeController;
 use App\Http\Controllers\Api\PostController;
@@ -9,8 +8,7 @@ use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\Api\SessionController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
-=======
->>>>>>> 040358a3d0775f028872693d3022ec3800b9f385
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\UserController;
