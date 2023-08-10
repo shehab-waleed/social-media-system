@@ -1,13 +1,12 @@
 <?php
 
-use App\Http\Controllers\Api\CommentController;
-use App\Http\Controllers\Api\PostController;
-use App\Http\Controllers\Api\NotificationController;
-use App\Http\Controllers\Api\RegisterController;
-use App\Http\Controllers\Api\SessionController;
-use App\Http\Controllers\Api\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\PostController;
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\CommentController;
+use App\Http\Controllers\Api\SessionController;
+use App\Http\Controllers\Api\RegisterController;
+use App\Http\Controllers\Api\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,3 +49,5 @@ Route::prefix('notifications')->middleware('auth:sanctum')->group(function () {
 Route::prefix('admin')->middleware(['auth:sanctum', 'can:admin'])->group(function () {
     Route::apiResource('users', UserController::class)->middleware(['auth:sanctum', 'can:admin']);
 });
+
+
