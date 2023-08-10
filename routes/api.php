@@ -61,7 +61,7 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'can:admin'])->group(functio
     Route::apiResource('users', UserController::class)->middleware(['auth:sanctum', 'can:admin']);
 });
 
-<<<<<<< HEAD
+
 //--- PostLike module ---
 Route::prefix('post')->middleware('auth:sanctum')->group(function () {
     Route::post('like-unlike', [LikeController::class, 'likePost']);
@@ -71,8 +71,4 @@ Route::prefix('comment')->middleware('auth:sanctum')->group(function () {
     Route::post('like-unlike', [LikeController::class, 'likeComment']);
 });
 
-
-
-=======
->>>>>>> 040358a3d0775f028872693d3022ec3800b9f385
 
