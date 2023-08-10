@@ -18,4 +18,8 @@ class Comment extends Model
     public function author(){
         return $this->belongsTo(User::class, 'user_id');
     }
+    public function likesComments(){
+        return $this->hasMany(CommentLike::class,'comment_id');
+    }
+
 }

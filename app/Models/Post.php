@@ -11,6 +11,7 @@ class Post extends Model
 
     public $guarded = [];
 
+
     public function scopeFilter($query , array $filters){
         $query->when($filters['user_id'] ?? false, function ($query, $user_id) {
             $query->where('user_id', $user_id);
@@ -33,5 +34,9 @@ class Post extends Model
     public function images(){
         return $this->hasMany(PostImages::class);
     }
+    public function likesPosts(){
+        return $this->hasMany(PostLike::class,'post_id');
+    }
+
 
 }

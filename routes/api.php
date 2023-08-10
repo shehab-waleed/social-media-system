@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\CommentController;
+use App\Http\Controllers\api\LikeController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\RegisterController;
@@ -50,3 +51,16 @@ Route::prefix('notifications')->middleware('auth:sanctum')->group(function () {
 Route::prefix('admin')->middleware(['auth:sanctum', 'can:admin'])->group(function () {
     Route::apiResource('users', UserController::class)->middleware(['auth:sanctum', 'can:admin']);
 });
+
+//--- PostLike module ---
+Route::prefix('post')->middleware('auth:sanctum')->group(function () {
+    Route::post('like-unlike', [LikeController::class, 'likePost']);
+});
+//--- PostLike module ---
+Route::prefix('comment')->middleware('auth:sanctum')->group(function () {
+    Route::post('like-unlike', [LikeController::class, 'likeComment']);
+});
+
+
+
+
