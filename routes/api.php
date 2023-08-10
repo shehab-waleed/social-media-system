@@ -1,23 +1,16 @@
 <?php
 
-<<<<<<< HEAD
 use App\Http\Controllers\Api\CommentController;
+use App\Http\Controllers\api\CommentLikeController;
 use App\Http\Controllers\api\LikeController;
+use App\Http\Controllers\Api\PostLikeController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\Api\SessionController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
-=======
->>>>>>> 040358a3d0775f028872693d3022ec3800b9f385
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\PostController;
-use App\Http\Controllers\Api\UserController;
-use App\Http\Controllers\Api\CommentController;
-use App\Http\Controllers\Api\SessionController;
-use App\Http\Controllers\Api\RegisterController;
-use App\Http\Controllers\Api\NotificationController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -61,18 +54,15 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'can:admin'])->group(functio
     Route::apiResource('users', UserController::class)->middleware(['auth:sanctum', 'can:admin']);
 });
 
-<<<<<<< HEAD
+
 //--- PostLike module ---
 Route::prefix('post')->middleware('auth:sanctum')->group(function () {
-    Route::post('like-unlike', [LikeController::class, 'likePost']);
+    Route::post('like-unlike', PostLikeController::class);
 });
-//--- PostLike module ---
+
+//--- commentLike module ---
 Route::prefix('comment')->middleware('auth:sanctum')->group(function () {
-    Route::post('like-unlike', [LikeController::class, 'likeComment']);
+    Route::post('like-unlike', CommentLikeController::class);
 });
 
-
-
-=======
->>>>>>> 040358a3d0775f028872693d3022ec3800b9f385
 
