@@ -54,14 +54,5 @@ Route::post('post/like', LikeController::class)->middleware('auth:sanctum')->nam
 Route::post('comment/like', LikeController::class)->middleware('auth:sanctum')->name('comment.like');
 
 
-//--- PostLike module ---
-Route::prefix('post')->middleware('auth:sanctum')->group(function () {
-    Route::post('like-unlike', PostLikeController::class);
-});
-
-//--- CommentLike module ---
-Route::prefix('comment')->middleware('auth:sanctum')->group(function () {
-    Route::post('like-unlike', CommentLikeController::class);
-});
 
 
