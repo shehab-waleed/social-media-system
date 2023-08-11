@@ -48,6 +48,12 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'can:admin'])->group(functio
     Route::apiResource('users', UserController::class)->middleware(['auth:sanctum', 'can:admin']);
 });
 
+
+//--- Likes module ---
+Route::post('post/like', LikeController::class)->middleware('auth:sanctum')->name('post.like');
+Route::post('comment/like', LikeController::class)->middleware('auth:sanctum')->name('comment.like');
+
+
 //--- PostLike module ---
 Route::prefix('post')->middleware('auth:sanctum')->group(function () {
     Route::post('like-unlike', PostLikeController::class);
