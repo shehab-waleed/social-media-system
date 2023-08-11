@@ -62,7 +62,7 @@ class LikeController extends Controller
         if ($commentLike) {
             $commentLike->delete();
             $comment->likes_num > 0 ? $comment->decrement('likes_num') : '';
-            return ApiResponse::send(200, 'Post Unliked successfully .', null);
+            return ApiResponse::send(200, 'Comment Unliked successfully .', null);
         } else {
             $comment->increment('likes_num');
             $like = CommentLike::create([
