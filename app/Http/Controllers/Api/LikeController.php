@@ -19,17 +19,15 @@ class LikeController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $likeAt = Route::currentRouteName() === 'post.like' ? 'post' : 'comment';
-        $table = $likeAt === 'post' ? 'posts' : 'comments';
+        $likeType = Route::currentRouteName() === 'post.like' ? 'post' : 'comment';
+        $tableName = $likeType === 'post' ? 'posts' : 'comments';
+        $itemIdKey = "{$likeType}_id";
 
         $attributes = $request->validate([
-            "$likeAt" . '_id' => ['required', "exists:$table,id"],
+            $itemIdKey => ['required', "exists:$tableName,id"],
         ]);
 
-        if ($likeAt === 'post')
-            return $this->likePost($attributes['post_id']);
-        else
-            return $this->likeComment($attributes['comment_id']);
+        return ($likeType === 'post') ? $this->likePost($attributes['post_id']) : $this->likeComment($attributes['comment_id']);
 
     }
 
