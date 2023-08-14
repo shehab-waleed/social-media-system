@@ -23,9 +23,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 //--- Auth module ---
-Route::post('login', [SessionController::class, 'store'])->name('login');
-Route::post('logout', [SessionController::class, 'destroy'])->middleware('auth:sanctum');
-Route::post('register', [RegisterController::class, 'store']);
+Route::middleware('guest')->group(function () {
+    Route::post('login', [SessionController::class, 'store'])->name('login');
+    Route::post('register', [RegisterController::class, 'store'])->name('register');
+});
+Route::post('logout', [SessionController::class, 'destroy'])->name('logout')->middleware('auth:sanctum');
+
 
 //--- Posts module ---
 Route::apiResource('posts', PostController::class)->middleware('auth:sanctum');
@@ -33,15 +36,18 @@ Route::prefix('posts')->middleware('auth:sanctum')->group(function () {
     Route::get('latest', [PostController::class, 'latest']);
 });
 
+
 //--- Comments module ---
 Route::get('comments/{postId}', [CommentController::class, 'index']);
-Route::apiResource('comments', CommentController::class)->only('store', 'destroy' , 'update')->middleware('auth:sanctum');
+Route::apiResource('comments', CommentController::class)->only('store', 'destroy', 'update')->middleware('auth:sanctum');
+
 
 //--- Notifications module ---
 Route::prefix('notifications')->middleware('auth:sanctum')->group(function () {
     Route::get('', [NotificationController::class, 'index']);
     Route::get('read-all', [NotificationController::class, 'readAll']);
 });
+
 
 //--- Admin module ---
 Route::prefix('admin')->middleware(['auth:sanctum', 'can:admin'])->group(function () {
@@ -52,7 +58,3 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'can:admin'])->group(functio
 //--- Likes module ---
 Route::post('post/like', LikeController::class)->middleware('auth:sanctum')->name('post.like');
 Route::post('comment/like', LikeController::class)->middleware('auth:sanctum')->name('comment.like');
-
-
-
-

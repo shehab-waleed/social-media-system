@@ -92,7 +92,7 @@ class PostController extends Controller
     {
         $post = Post::with('author', 'comments', 'images')->find($id);
 
-        if (! $post)
+        if (!$post)
             return ApiResponse::send(200, 'Post not found', null);
 
         return ApiResponse::send(200, 'Post retireved successfully . ', new PostResource($post));
@@ -103,13 +103,12 @@ class PostController extends Controller
      */
     public function update(UpdatePostRequest $request, $id)
     {
-        //
         $post = Post::find($id);
 
         if (!$post)
             return ApiResponse::send(200, 'Post not found', []);
 
-        if (!auth()->user()->can('has-post', $post))
+        if (!Gate::allows('has-post' , $post))
             return ApiResponse::send(403, 'You are not allowed to take this action', null);
 
         $updatedPost = $post->update($request->validated());
@@ -130,10 +129,10 @@ class PostController extends Controller
         if (!$post)
             return ApiResponse::send(200, 'Post not found', []);
 
-        if (!auth()->user()->can('has-post', $post))
+        if (!Gate::allows('has-post', $post))
             return ApiResponse::send(403, 'You are not authorized to take this action', []);
 
-        foreach($post->images as $element){
+        foreach ($post->images as $element) {
             Storage::delete($element->image);
             $element->delete();
         }
