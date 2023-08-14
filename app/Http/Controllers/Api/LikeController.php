@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Helpers\ApiResponse;
-use App\Http\Resources\LikeResource;
 use App\Models\Post;
+use App\Models\Comment;
+use App\Models\PostLike;
+use App\Models\CommentLike;
+use App\Helpers\ApiResponse;
+use App\Notifications\CommentLoveNotification;
+use App\Notifications\PostLikeNotification;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Comment;
-use App\Models\CommentLike;
-use App\Models\PostLike;
+use App\Http\Resources\LikeResource;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Notification;
 
 class LikeController extends Controller
 {
@@ -35,7 +38,8 @@ class LikeController extends Controller
     {
 
         $postLike = auth()->user()->postsLikes->where('post_id', $postId)->first();
-        $post = Post::find($postId);
+        $post = Post::with('author')->find($postId);
+
         if ($postLike) {
             $postLike->delete();
             $post->likes_num > 0 ? $post->decrement('likes_num') : '';
@@ -47,6 +51,7 @@ class LikeController extends Controller
                 'user_id' => auth()->user()->id
             ]);
             $like->likedAt = 'Post';
+            Notification::send($post->author , new PostLikeNotification($post->id));
 
             return ApiResponse::send(201, 'Post liked successfully .', new LikeResource($like));
         }
@@ -56,7 +61,8 @@ class LikeController extends Controller
     private function likeComment($commentId)
     {
         $commentLike = auth()->user()->commentsLikes->where('comment_id', $commentId)->first();
-        $comment = Comment::find($commentId);
+        $comment = Comment::with('author')->find($commentId);
+
         if ($commentLike) {
             $commentLike->delete();
             $comment->likes_num > 0 ? $comment->decrement('likes_num') : '';
@@ -68,6 +74,7 @@ class LikeController extends Controller
                 'user_id' => auth()->user()->id
             ]);
             $like->likedAt = 'Comment';
+            Notification::send($comment->author, new CommentLoveNotification($comment->id));
 
             return ApiResponse::send(201, 'Comment liked successfully .', new LikeResource($like));
         }

@@ -4,23 +4,20 @@ namespace App\Notifications;
 
 use App\Models\Post;
 use Illuminate\Bus\Queueable;
+use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
 
-class CommentNotification extends Notification
+class PostLikeNotification extends Notification
 {
     use Queueable;
 
+    protected $postId;
     /**
      * Create a new notification instance.
      */
-    private $postId;
-
-
     public function __construct($postId)
     {
-        //
         $this->postId = $postId;
     }
 
@@ -34,16 +31,6 @@ class CommentNotification extends Notification
         return ['database'];
     }
 
-    /**
-     * Get the mail representation of the notification.
-     */
-    public function toMail(object $notifiable): MailMessage
-    {
-        return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
-    }
 
     /**
      * Get the array representation of the notification.
@@ -52,12 +39,11 @@ class CommentNotification extends Notification
      */
     public function toArray(object $notifiable): array
     {
-        $post = Post::find($this->postId);
+        $post = Post::with('author')->find($this->postId);
         return [
             'post_id' => $post->id,
-            'post_owner_id' => $post->author->id,
-            'user_who_created_comment' => auth()->user()->id,
-            'message' => ucwords(auth()->user()->first_name) . ' , Commented on your post.',
+            'post_author_id' => $post->author->id,
+            'message' => ucwords(auth()->user()->first_name) . ', Liked your post !',
         ];
     }
 }

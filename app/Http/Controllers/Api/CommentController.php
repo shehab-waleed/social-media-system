@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Helpers\ApiResponse;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreCommentRequest;
-use App\Http\Resources\CommentResource;
-use App\Models\Comment;
-use App\Models\Post;
-use App\Notifications\CommentNotification;
 use Auth;
+use App\Models\Post;
+use App\Models\Comment;
+use App\Helpers\ApiResponse;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
+use App\Http\Resources\CommentResource;
+use App\Http\Requests\StoreCommentRequest;
+use App\Notifications\CommentNotification;
+use Illuminate\Support\Facades\Notification;
 
 class CommentController extends Controller
 {
@@ -49,7 +50,7 @@ class CommentController extends Controller
 
         $comment = Comment::create($data);
 
-        \Notification::send($post->author, new CommentNotification($data['post_id']));
+        Notification::send($post->author, new CommentNotification($data['post_id']));
 
         if($comment){
             return ApiResponse::send(200, 'Comment Created successfully . ', new CommentResource($comment));
@@ -67,7 +68,7 @@ class CommentController extends Controller
         ]);
 
         $comment = Comment::with('author')->find($id);
-        if (!auth()->user()->can('has-comment', $comment))
+        if (!Gate::allows('has-comment' , $comment))
             return ApiResponse::send(403, 'You are not allowed to take this action');
 
         if (!$comment)
