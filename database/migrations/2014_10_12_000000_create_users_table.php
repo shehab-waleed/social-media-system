@@ -20,6 +20,8 @@ return new class extends Migration {
             $table->string('country');
             $table->string('password');
             $table->boolean('is_admin')->default(false);
+            $table->integer('code')->nullable();
+            $table->dateTime('code_expires_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

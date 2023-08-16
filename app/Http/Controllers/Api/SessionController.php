@@ -3,27 +3,20 @@
 namespace App\Http\Controllers\Api;
 
 use App\Helpers\ApiResponse;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreLoginRequest;
-use Auth;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\StoreLoginRequest;
 
 class SessionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreLoginRequest $request)
     {
-        //
+
         $isUserAuthanticated = Auth::attempt(['email' => $request->email, 'password' => $request->password]);
 
         if ($isUserAuthanticated) {
@@ -33,28 +26,13 @@ class SessionController extends Controller
             $data['Last Name'] = $user->last_name;
             $data['Email'] = $user->email;
 
+            $user->generateOTP();
             return ApiResponse::send(200, 'User logged in successfully .', $data);
         } else {
             return ApiResponse::send(401, 'User credentials does not works', null);
         }
         ;
 
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
     }
 
     /**

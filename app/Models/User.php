@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -61,5 +62,12 @@ class User extends Authenticatable
 
     public function commentsLikes(){
         return $this->hasMany(CommentLike::class);
+    }
+
+    public function generateOTP(){
+        $this->timestamps = false;
+        $this->code = rand(1000, 9999);
+        $this->code_expires_at = now()->addMinutes(15);
+        $this->save();
     }
 }
