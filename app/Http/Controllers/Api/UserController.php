@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\Rule;
 
 class UserController extends Controller
@@ -19,7 +20,9 @@ class UserController extends Controller
     public function index()
     {
         //
-        $users = User::all();
+        $users = Cache::remember('users', 60 * 60, function () {
+            return User::all();
+        });
 
         if ($users->count() > 0)
             return ApiResponse::send(200, 'Users retireved successfully .', UserResource::collection($users));

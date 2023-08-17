@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Models\Post;
+use App\Models\User;
+use App\Observers\UserObserver;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -33,5 +35,9 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('admin', function ($user) {
             return auth()->user()->is_admin;
         });
+
+        // Observers
+        User::observe(UserObserver::class);
     }
+
 }
