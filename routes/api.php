@@ -31,7 +31,7 @@ Route::post('logout', [SessionController::class, 'destroy'])->name('logout')->mi
 
 
 //--- Posts module ---
-Route::apiResource('posts', PostController::class)->middleware('auth:sanctum');
+Route::apiResource('posts', PostController::class)->middleware(['auth:sanctum' , 'verified']);
 Route::prefix('posts')->middleware('auth:sanctum')->group(function () {
     Route::get('latest', [PostController::class, 'latest']);
 });

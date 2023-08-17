@@ -22,6 +22,7 @@ return new class extends Migration {
             $table->boolean('is_admin')->default(false);
             $table->integer('code')->nullable();
             $table->dateTime('code_expires_at')->nullable();
+            $table->dateTime('email_verified_at')->nullable()->default(null);
             $table->rememberToken();
             $table->timestamps();
         });
