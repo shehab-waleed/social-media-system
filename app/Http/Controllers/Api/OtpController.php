@@ -28,7 +28,7 @@ class OtpController extends Controller
         $data = $request->validate([
             'user_id' => ['required', 'exists:users,id'],
         ]);
-
+        
         if (OtpCode::generate($data['user_id']))
             return ApiResponse::send(201, 'OTP generated successfully .');
 

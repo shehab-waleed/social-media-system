@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use App\Models\Otp;
 use App\Models\User;
+use App\Notifications\OtpNotification;
 use Illuminate\Support\Facades\Auth;
 
 class OtpCode
@@ -15,11 +16,15 @@ class OtpCode
         if ($user->otp)
             $user->otp->delete();
 
-        return Otp::create([
+        $otp = Otp::create([
             'user_id' => $user->id,
             'code' => rand(1000, 9999),
             'expires_at' => now()->addMinutes(15)
         ]);
+
+        $user->notify(new OtpNotification($otp->code));
+
+        return $otp ? true : false;
     }
 
 
