@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Helpers\ApiResponse;
+use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -17,17 +18,11 @@ class SessionController extends Controller
     public function store(StoreLoginRequest $request)
     {
 
-        $isUserAuthanticated = Auth::attempt(['email' => $request->email, 'password' => $request->password]);
-
-        if ($isUserAuthanticated) {
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $user = Auth::user();
-            $data['Token'] = $user->createToken('userToken')->plainTextToken;
-            $data['First Name'] = $user->first_name;
-            $data['Last Name'] = $user->last_name;
-            $data['Email'] = $user->email;
-
-            $user->generateOTP();
-            return ApiResponse::send(200, 'User logged in successfully .', $data);
+            $user->token = $user->createToken('userToken')->plainTextToken;
+            
+            return ApiResponse::send(200, 'User logged in successfully .', new UserResource($user));
         } else {
             return ApiResponse::send(401, 'User credentials does not works', null);
         }

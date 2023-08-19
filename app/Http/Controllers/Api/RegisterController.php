@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Helpers\ApiResponse;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreRegisterRequest;
-use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Helpers\OtpCode;
+use App\Helpers\ApiResponse;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
+use App\Http\Requests\StoreRegisterRequest;
 
 class RegisterController extends Controller
 {
@@ -21,9 +22,11 @@ class RegisterController extends Controller
             $photoPath = $request->file('photo')->store('photos');
             $validatedData['photo'] = $photoPath;
         }
-        $validatedData = $request->validated();
 
+        $validatedData = $request->validated();
         $user = User::create($validatedData);
+        OtpCode::generate($user->id);
+
         $user->token = $user->createToken('userToken')->plainTextToken;
         $user->photo = $photoPath ?? null;
 

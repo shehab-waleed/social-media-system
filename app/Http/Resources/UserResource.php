@@ -15,6 +15,7 @@ class UserResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'Id' => $this->id,
             'First Name' => $this->first_name,
             'Last Name' => $this->last_name,
             'Username' => $this->username,
@@ -22,6 +23,7 @@ class UserResource extends JsonResource
             'Email' => $this->email,
             'photo' => $this->photo ?? null,
             'Token' => $this->token,
+            'Is verified' => $this->email_verified_at ? true : false
         ];
     }
 }
