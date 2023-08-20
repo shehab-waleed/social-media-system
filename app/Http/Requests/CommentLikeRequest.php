@@ -22,7 +22,7 @@ class CommentLikeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'comment_id' => 'required|integer|exists:comments,id'
+            'comment_id' => 'required|integer|exists:comments,id',
         ];
     }
 }

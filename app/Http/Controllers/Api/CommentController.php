@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
-use Auth;
-use App\Models\Post;
-use App\Models\Comment;
 use App\Helpers\ApiResponse;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Gate;
-use App\Http\Resources\CommentResource;
 use App\Http\Requests\StoreCommentRequest;
+use App\Http\Resources\CommentResource;
+use App\Models\Comment;
+use App\Models\Post;
 use App\Notifications\CommentNotification;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Notification;
 
 class CommentController extends Controller
@@ -23,15 +22,17 @@ class CommentController extends Controller
     {
 
         $post = Post::with('comments')->find($postId);
-        if (! $post)
+        if (! $post) {
             return ApiResponse::send(200, 'Post not found', []);
+        }
 
         $comments = Comment::where('post_id', $postId)->with('author')->get();
 
-        if (count($comments) > 0)
+        if (count($comments) > 0) {
             return ApiResponse::send(200, 'Comments retireved successfully .', CommentResource::collection($comments));
-        else
+        } else {
             return ApiResponse::send(200, 'Post does not contains any comments', []);
+        }
     }
 
     /**
@@ -45,18 +46,18 @@ class CommentController extends Controller
 
         $post = Post::find($data['post_id']);
 
-        if (!$post)
+        if (! $post) {
             return ApiResponse::send(200, 'Post not found', []);
+        }
 
         $comment = Comment::create($data);
 
         Notification::send($post->author, new CommentNotification($data['post_id']));
 
-        if($comment){
+        if ($comment) {
             return ApiResponse::send(200, 'Comment Created successfully . ', new CommentResource($comment));
         }
     }
-
 
     /**
      * Update the specified resource in storage.
@@ -64,17 +65,20 @@ class CommentController extends Controller
     public function update(Request $request, string $id)
     {
         $commentNewData = $request->validate([
-            'body' => ['required' , 'string']
+            'body' => ['required', 'string'],
         ]);
 
         $comment = Comment::with('author')->find($id);
-        if (!Gate::allows('has-comment' , $comment))
+        if (! Gate::allows('has-comment', $comment)) {
             return ApiResponse::send(403, 'You are not allowed to take this action');
+        }
 
-        if (!$comment)
+        if (! $comment) {
             return ApiResponse::send(200, 'Comment not found', null);
+        }
 
         $comment->update($commentNewData);
+
         return ApiResponse::send(200, 'Comment updated successfully .', new CommentResource($comment));
 
     }
@@ -86,13 +90,16 @@ class CommentController extends Controller
     {
         //
         $comment = Comment::find($id);
-        if (!$comment)
+        if (! $comment) {
             return ApiResponse::send(200, 'The comment does not exists. ', []);
+        }
 
-        if (! Gate::allows('has-comment', $comment))
+        if (! Gate::allows('has-comment', $comment)) {
             return ApiResponse::send(403, 'You are not allow to take this action', []);
+        }
 
         $comment->delete();
+
         return ApiResponse::send(200, 'Comment removed successfully . ');
     }
 }

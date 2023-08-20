@@ -18,7 +18,6 @@ class UserFactory extends Factory
     public function definition(): array
     {
 
-
         return [
             'first_name' => fake()->name(),
             'last_name' => fake()->name(),
@@ -27,7 +26,7 @@ class UserFactory extends Factory
             'country' => fake()->country(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.', // password
             'remember_token' => Str::random(10),
-            'is_admin' => 0
+            'is_admin' => 0,
         ];
     }
 

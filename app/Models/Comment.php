@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\CommentLike> $likesComments
  * @property-read int|null $likes_comments_count
  * @property-read \App\Models\Post|null $post
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Comment newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Comment newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Comment query()
@@ -31,6 +32,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Comment wherePostId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Comment whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Comment whereUserId($value)
+ *
  * @mixin \Eloquent
  */
 class Comment extends Model
@@ -39,15 +41,18 @@ class Comment extends Model
 
     protected $guarded = [];
 
-    public function post(){
+    public function post()
+    {
         return $this->belongsTo(Post::class);
     }
 
-    public function author(){
+    public function author()
+    {
         return $this->belongsTo(User::class, 'user_id');
     }
-    public function likesComments(){
-        return $this->hasMany(CommentLike::class,'comment_id');
-    }
 
+    public function likesComments()
+    {
+        return $this->hasMany(CommentLike::class, 'comment_id');
+    }
 }

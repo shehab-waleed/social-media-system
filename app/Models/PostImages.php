@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Post|null $post
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|PostImages newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PostImages newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PostImages query()
@@ -22,6 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|PostImages whereImage($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PostImages wherePostId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PostImages whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class PostImages extends Model

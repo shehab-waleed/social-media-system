@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Post $post
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|PostLike newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PostLike newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PostLike query()
@@ -22,22 +23,24 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|PostLike wherePostId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PostLike whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PostLike whereUserId($value)
+ *
  * @mixin \Eloquent
  */
 class PostLike extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'post_id',
-        'user_id'
+        'user_id',
     ];
-
 
     protected $casts = [
         'post_id' => 'integer',
     ];
 
-    public function post(){
+    public function post()
+    {
         return $this->belongsTo(Post::class);
     }
 }

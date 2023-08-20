@@ -3,9 +3,9 @@
 namespace App\Http\Requests;
 
 use App\Helpers\ApiResponse;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Contracts\Validation\Validator;
 
 class StorePostRequest extends FormRequest
 {
@@ -17,12 +17,12 @@ class StorePostRequest extends FormRequest
         return true;
     }
 
-
-    public function failedValidation(Validator $validator){
-        if($this->is('api/*')){
+    public function failedValidation(Validator $validator)
+    {
+        if ($this->is('api/*')) {
             $response = ApiResponse::send(422, 'Validation error', $validator->errors());
 
-            throw new ValidationException($validator , $response);
+            throw new ValidationException($validator, $response);
         }
     }
 
@@ -34,8 +34,8 @@ class StorePostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required' , 'min:3' , 'max:30'],
-            'body' => ['required' , 'min:3' , 'max:255'],
+            'title' => ['required', 'min:3', 'max:30'],
+            'body' => ['required', 'min:3', 'max:255'],
             'images.*' => ['image'],
         ];
     }

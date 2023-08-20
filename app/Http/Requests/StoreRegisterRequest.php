@@ -17,6 +17,7 @@ class StoreRegisterRequest extends FormRequest
     {
         return true;
     }
+
     protected function failedValidation(Validator $validator)
     {
         if ($this->is('api/*')) {
@@ -31,18 +32,17 @@ class StoreRegisterRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
      */
-
     public function rules(): array
     {
         return [
-            'first_name' => ['string' , 'required' , 'min:3' , 'max:24'],
-            'last_name' => ['string' , 'required' , 'min:3' , 'max:24'],
-            'username' => ['string' ,'unique:users,username' , 'required' , 'min:3' , 'max:24'],
-            'email' => ['email' , 'required' ,'unique:users,email'],
+            'first_name' => ['string', 'required', 'min:3', 'max:24'],
+            'last_name' => ['string', 'required', 'min:3', 'max:24'],
+            'username' => ['string', 'unique:users,username', 'required', 'min:3', 'max:24'],
+            'email' => ['email', 'required', 'unique:users,email'],
             'country' => ['required'],
-            'password' => ['required', 'confirmed' , Rules\Password::defaults()],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'is_admin' => ['boolean'],
-            'photo' => ['image']
+            'photo' => ['image'],
         ];
     }
 }

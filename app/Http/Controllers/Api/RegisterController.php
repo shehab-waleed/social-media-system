@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\User;
-use App\Helpers\OtpCode;
 use App\Helpers\ApiResponse;
-use Illuminate\Http\Request;
+use App\Helpers\OtpCode;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\UserResource;
 use App\Http\Requests\StoreRegisterRequest;
+use App\Http\Resources\UserResource;
+use App\Models\User;
 
 class RegisterController extends Controller
 {
-
     /**
      * Store a newly created resource in storage.
      */
@@ -32,5 +30,4 @@ class RegisterController extends Controller
 
         return ApiResponse::send(201, 'User registered successfully .', new UserResource($user));
     }
-
 }

@@ -10,9 +10,11 @@ class Otp extends Model
     use HasFactory;
 
     protected $guarded = [];
+
     protected $table = 'user_otp';
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 }

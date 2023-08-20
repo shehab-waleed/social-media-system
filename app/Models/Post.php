@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read int|null $images_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PostLike> $likesPosts
  * @property-read int|null $likes_posts_count
+ *
  * @method static \Database\Factories\PostFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Post filter(array $filters)
  * @method static \Illuminate\Database\Eloquent\Builder|Post newModelQuery()
@@ -34,6 +35,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Post whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Post whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Post whereUserId($value)
+ *
  * @mixin \Eloquent
  */
 class Post extends Model
@@ -42,31 +44,35 @@ class Post extends Model
 
     public $guarded = [];
 
-
-    public function scopeFilter($query , array $filters){
+    public function scopeFilter($query, array $filters)
+    {
         $query->when($filters['user_id'] ?? false, function ($query, $user_id) {
             $query->where('user_id', $user_id);
         });
 
         $query->when($filters['title'] ?? false, function ($query, $title) {
-            $query->where('title', 'like', '%' . $title . '%');
+            $query->where('title', 'like', '%'.$title.'%');
         });
 
     }
 
-    public function author()  {
-        return $this->belongsTo(User::class , 'user_id');
+    public function author()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function comments(){
+    public function comments()
+    {
         return $this->hasMany(Comment::class);
     }
 
-    public function images(){
+    public function images()
+    {
         return $this->hasMany(PostImages::class);
     }
-    public function likesPosts(){
-        return $this->hasMany(PostLike::class,'post_id');
-    }
 
+    public function likesPosts()
+    {
+        return $this->hasMany(PostLike::class, 'post_id');
+    }
 }

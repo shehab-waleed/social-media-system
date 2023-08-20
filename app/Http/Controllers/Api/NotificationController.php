@@ -4,10 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
-use App\Models\Notification;
-use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
@@ -18,23 +14,24 @@ class NotificationController extends Controller
     {
         $notifications = auth()->user()->notifications;
 
-        if ($notifications->count() == 0)
+        if ($notifications->count() == 0) {
             return ApiResponse::send(200, 'User does not have any notifications', []);
-        else
+        } else {
             return ApiResponse::send(200, 'Notificaitons retireved successfully. ', $notifications);
+        }
     }
-
 
     public function readAll()
     {
         $user = auth()->user();
-        
-        if ($user->unreadNotifications()->count() == 0)
+
+        if ($user->unreadNotifications()->count() == 0) {
             return ApiResponse::send(200, 'User does not has any unread notifications .', []);
-        else {
+        } else {
             foreach ($user->notifications as $notification) {
                 $notification->markAsRead();
             }
+
             return ApiResponse::send(200, 'Notifications marked as readed successfully .', []);
         }
     }

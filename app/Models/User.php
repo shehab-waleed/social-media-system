@@ -9,7 +9,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-
 /**
  * App\Models\User
  *
@@ -40,6 +39,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property-read int|null $posts_likes_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
  * @property-read int|null $tokens_count
+ *
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
@@ -59,6 +59,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUsername($value)
+ *
  * @mixin \Eloquent
  */
 class User extends Authenticatable implements MustVerifyEmail
@@ -96,7 +97,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-
 
     public function posts()
     {

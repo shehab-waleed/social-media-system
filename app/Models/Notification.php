@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $read_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Notification newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Notification newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Notification query()
@@ -27,6 +28,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Notification whereReadAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Notification whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Notification whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class Notification extends Model

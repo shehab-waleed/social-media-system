@@ -7,12 +7,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Http\Resources\PostResource;
-use App\Jobs\DeleteUserPosts;
 use App\Models\Post;
 use App\Models\PostImages;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -22,8 +22,11 @@ class PostController extends Controller
     public function index()
     {
         //
-        $posts = Post::latest()->filter(request(['user_id', 'title']))->with('author', 'comments', 'images')->paginate(10);
-        if (count($posts) > 0) {
+        $posts = Cache::remember('posts', 60 * 30, function () {
+            return Post::latest()->filter(request(['user_id', 'title']))->with('author', 'comments', 'images')->paginate(10);
+        });
+
+        if ($posts->count()) {
             if ($posts->total() > $posts->perPage()) {
                 $data = [
                     'data' => PostResource::collection($posts),
@@ -40,6 +43,7 @@ class PostController extends Controller
             } else {
                 $data = PostResource::collection($posts);
             }
+
             return ApiResponse::send(200, 'Posts retrieved successfully .', $data);
 
         } else {
@@ -51,11 +55,13 @@ class PostController extends Controller
     {
         $posts = Post::latest()->filter(request(['user_id']))->take(5)->get();
 
-        if (count($posts) > 0)
+        if (count($posts) > 0) {
             return ApiResponse::send(200, 'Posts retireved successfully . ', PostResource::collection($posts));
+        }
 
         return ApiResponse::send(200, 'No posts found', []);
     }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -64,7 +70,6 @@ class PostController extends Controller
         $postData = $request->validated();
         $postData['user_id'] = $request->user()->id;
         unset($postData['images']);
-
         $record = Post::create($postData);
 
         if ($request->has('images')) {
@@ -72,7 +77,7 @@ class PostController extends Controller
                 $imagePath = $image->store('post_images');
                 PostImages::create([
                     'post_id' => $record->id,
-                    'image' => $imagePath
+                    'image' => $imagePath,
                 ]);
             }
 
@@ -81,7 +86,7 @@ class PostController extends Controller
         if ($record) {
             return ApiResponse::send(201, 'Post created successfully .', new PostResource($record));
         } else {
-            return ApiResponse::send(200, "Somthing went wrong", []);
+            return ApiResponse::send(200, 'Somthing went wrong', []);
         }
     }
 
@@ -92,8 +97,9 @@ class PostController extends Controller
     {
         $post = Post::with('author', 'comments', 'images')->find($id);
 
-        if (!$post)
+        if (! $post) {
             return ApiResponse::send(200, 'Post not found', null);
+        }
 
         return ApiResponse::send(200, 'Post retireved successfully . ', new PostResource($post));
     }
@@ -105,17 +111,20 @@ class PostController extends Controller
     {
         $post = Post::find($id);
 
-        if (!$post)
+        if (! $post) {
             return ApiResponse::send(200, 'Post not found', []);
+        }
 
-        if (!Gate::allows('has-post' , $post))
+        if (! Gate::allows('has-post', $post)) {
             return ApiResponse::send(403, 'You are not allowed to take this action', null);
+        }
 
         $updatedPost = $post->update($request->validated());
-        if ($updatedPost)
+        if ($updatedPost) {
             return ApiResponse::send(201, 'Post updated successfully .', new PostResource($post));
-        else
+        } else {
             return ApiResponse::send(200, 'Something went wrong . ', null);
+        }
     }
 
     /**
@@ -126,18 +135,20 @@ class PostController extends Controller
         //
         $post = Post::with('images')->find($id);
 
-        if (!$post)
+        if (! $post) {
             return ApiResponse::send(200, 'Post not found', []);
+        }
 
-        if (!Gate::allows('has-post', $post))
+        if (! Gate::allows('has-post', $post)) {
             return ApiResponse::send(403, 'You are not authorized to take this action', []);
+        }
 
         foreach ($post->images as $element) {
             Storage::delete($element->image);
             $element->delete();
         }
         $post->delete();
+
         return ApiResponse::send(200, 'Post deleted successfully . ', []);
     }
-
 }

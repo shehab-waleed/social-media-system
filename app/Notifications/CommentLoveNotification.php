@@ -5,14 +5,13 @@ namespace App\Notifications;
 use App\Models\Comment;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 
 class CommentLoveNotification extends Notification
 {
     use Queueable;
 
     protected $commentId;
+
     /**
      * Create a new notification instance.
      */
@@ -31,7 +30,6 @@ class CommentLoveNotification extends Notification
         return ['database'];
     }
 
-
     /**
      * Get the array representation of the notification.
      *
@@ -44,7 +42,7 @@ class CommentLoveNotification extends Notification
         return [
             'comment_id' => $comment->id,
             'post_id' => $comment->post->id,
-            'message' => ucwords(auth()->user()->first_name) . ", Loved your comment on {$comment->post->author->first_name}'s post. "
+            'message' => ucwords(auth()->user()->first_name).", Loved your comment on {$comment->post->author->first_name}'s post. ",
         ];
     }
 }

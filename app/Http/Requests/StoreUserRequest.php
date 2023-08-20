@@ -3,11 +3,11 @@
 namespace App\Http\Requests;
 
 use App\Helpers\ApiResponse;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Contracts\Validation\Validator;
 
 class StoreUserRequest extends FormRequest
 {
@@ -19,11 +19,12 @@ class StoreUserRequest extends FormRequest
         return Gate::allows('admin');
     }
 
-    protected function failedValidation(Validator $validator){
-        if($this->is('api/*')){
+    protected function failedValidation(Validator $validator)
+    {
+        if ($this->is('api/*')) {
             $response = ApiResponse::send(422, 'Validation Errors', $validator->errors());
 
-            throw new ValidationException($validator , $response);
+            throw new ValidationException($validator, $response);
         }
     }
 
@@ -40,7 +41,7 @@ class StoreUserRequest extends FormRequest
             'last_name' => ['string', 'required', 'min:3', 'max:24'],
             'username' => ['string', 'unique:users,username', 'required', 'min:3', 'max:24'],
             'email' => ['email', 'required', 'unique:users,email'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()]
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ];
     }
 }

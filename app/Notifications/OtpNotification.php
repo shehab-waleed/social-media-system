@@ -3,7 +3,6 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -36,9 +35,9 @@ class OtpNotification extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage)->from('shehabwaleed2010@gmail.com' , 'Social Project')
+        return (new MailMessage)->from('shehabwaleed2010@gmail.com', 'Social Project')
             ->subject('OTP code ')
-            ->view('emails.otp', ['user' => $notifiable,'otpCode' => $this->otpCode]);
+            ->view('emails.otp', ['user' => $notifiable, 'otpCode' => $this->otpCode]);
     }
 
     /**

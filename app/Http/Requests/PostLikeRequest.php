@@ -16,6 +16,7 @@ class PostLikeRequest extends FormRequest
     {
         return true;
     }
+
     public function failedValidation(Validator $validator)
     {
         if ($this->is('api/*')) {
@@ -25,7 +26,6 @@ class PostLikeRequest extends FormRequest
         }
     }
 
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -34,7 +34,7 @@ class PostLikeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'post_id' => 'required|integer|exists:posts,id'
+            'post_id' => 'required|integer|exists:posts,id',
 
         ];
     }

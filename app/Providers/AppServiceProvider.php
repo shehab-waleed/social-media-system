@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Post;
 use App\Models\User;
+use App\Observers\PostObserver;
 use App\Observers\UserObserver;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -38,6 +39,6 @@ class AppServiceProvider extends ServiceProvider
 
         // Observers
         User::observe(UserObserver::class);
+        Post::observe(PostObserver::class);
     }
-
 }
