@@ -36,7 +36,7 @@ class OtpNotification extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage)
+        return (new MailMessage)->from('shehabwaleed2010@gmail.com' , 'Social Project')
             ->subject('OTP code ')
             ->view('emails.otp', ['user' => $notifiable,'otpCode' => $this->otpCode]);
     }
