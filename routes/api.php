@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\Auth\OtpController;
 use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\Api\Auth\SessionController;
 use App\Http\Controllers\Api\CommentController;
+use App\Http\Controllers\Api\FollowingController;
 use App\Http\Controllers\Api\LikeController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\PostController;
@@ -43,7 +44,8 @@ Route::prefix('notifications')->middleware('auth:sanctum')->group(function () {
 Route::post('post/like', LikeController::class)->middleware('auth:sanctum')->name('post.like');
 Route::post('comment/like', LikeController::class)->middleware('auth:sanctum')->name('comment.like');
 
-//--- Admin module ---
-Route::prefix('admin')->middleware(['auth:sanctum', 'can:admin'])->group(function () {
-    Route::apiResource('users', UserController::class)->middleware(['auth:sanctum', 'can:admin']);
+//--- Following module ---
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('follow/{followedUser}', [FollowingController::class, 'store'])->middleware('auth:sanctum');
+    Route::delete('unfollow/{followedUser}', [FollowingController::class, 'destroy'])->middleware('auth:sanctum');
 });
