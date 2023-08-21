@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\Auth\OtpController;
-use App\Http\Controllers\Api\Auth\SessionController;
 use App\Http\Controllers\Api\Auth\RegisterController;
+use App\Http\Controllers\Api\Auth\SessionController;
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\LikeController;
 use App\Http\Controllers\Api\NotificationController;
@@ -28,7 +28,7 @@ Route::prefix('posts')->middleware('auth:sanctum')->group(function () {
 });
 
 //--- Comments module ---
-Route::middleware(['auth:sanctum , verified'])->group(function () {
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('comments/{postId}', [CommentController::class, 'index']);
     Route::apiResource('comments', CommentController::class)->only('store', 'destroy', 'update');
 });
@@ -39,11 +39,11 @@ Route::prefix('notifications')->middleware('auth:sanctum')->group(function () {
     Route::get('read-all', [NotificationController::class, 'readAll']);
 });
 
+//--- Likes module ---
+Route::post('post/like', LikeController::class)->middleware('auth:sanctum')->name('post.like');
+Route::post('comment/like', LikeController::class)->middleware('auth:sanctum')->name('comment.like');
+
 //--- Admin module ---
 Route::prefix('admin')->middleware(['auth:sanctum', 'can:admin'])->group(function () {
     Route::apiResource('users', UserController::class)->middleware(['auth:sanctum', 'can:admin']);
 });
-
-//--- Likes module ---
-Route::post('post/like', LikeController::class)->middleware('auth:sanctum')->name('post.like');
-Route::post('comment/like', LikeController::class)->middleware('auth:sanctum')->name('comment.like');

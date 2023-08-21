@@ -115,7 +115,7 @@ class PostController extends Controller
             return ApiResponse::send(200, 'Post not found', []);
         }
 
-        if (! Gate::allows('has-post', $post)) {
+        if (!Auth()->user()->can('has-post', $post)) {
             return ApiResponse::send(403, 'You are not allowed to take this action', null);
         }
 
@@ -139,7 +139,7 @@ class PostController extends Controller
             return ApiResponse::send(200, 'Post not found', []);
         }
 
-        if (! Gate::allows('has-post', $post)) {
+        if (! Auth()->user()->can('has-post', $post)) {
             return ApiResponse::send(403, 'You are not authorized to take this action', []);
         }
 

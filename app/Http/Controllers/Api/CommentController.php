@@ -69,7 +69,7 @@ class CommentController extends Controller
         ]);
 
         $comment = Comment::with('author')->find($id);
-        if (! Gate::allows('has-comment', $comment)) {
+        if (! Auth()->user()->can('has-comment' , $comment)) {
             return ApiResponse::send(403, 'You are not allowed to take this action');
         }
 
@@ -94,7 +94,7 @@ class CommentController extends Controller
             return ApiResponse::send(200, 'The comment does not exists. ', []);
         }
 
-        if (! Gate::allows('has-comment', $comment)) {
+        if (!Auth()->user()->can('has-comment', $comment)) {
             return ApiResponse::send(403, 'You are not allow to take this action', []);
         }
 
