@@ -1,12 +1,12 @@
 <?php
 
+use App\Http\Controllers\Api\Auth\OtpController;
+use App\Http\Controllers\Api\Auth\SessionController;
+use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\LikeController;
 use App\Http\Controllers\Api\NotificationController;
-use App\Http\Controllers\Api\OtpController;
 use App\Http\Controllers\Api\PostController;
-use App\Http\Controllers\Api\RegisterController;
-use App\Http\Controllers\Api\SessionController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
