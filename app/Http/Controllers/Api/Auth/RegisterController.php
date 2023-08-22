@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Helpers\ApiResponse;
-use App\Helpers\OtpCode;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreRegisterRequest;
 use App\Http\Resources\UserResource;
+use App\Models\OTP;
 use App\Models\User;
 
 class RegisterController extends Controller
@@ -23,7 +23,7 @@ class RegisterController extends Controller
 
         $validatedData = $request->validated();
         $user = User::create($validatedData);
-        OtpCode::generate($user->id);
+        OTP::generate($user->id);
 
         $user->token = $user->createToken('userToken')->plainTextToken;
         $user->photo = $photoPath ?? null;

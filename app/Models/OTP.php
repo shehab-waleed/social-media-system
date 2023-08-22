@@ -1,14 +1,25 @@
 <?php
 
-namespace App\Helpers;
+namespace App\Models;
 
-use App\Models\Otp;
-use App\Models\User;
 use App\Notifications\OtpNotification;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
-class OtpCode
+class OTP extends Model
 {
+    use HasFactory;
+
+    protected $guarded = [];
+
+    protected $table = 'user_otp';
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public static function generate(int $userId)
     {
         $user = User::with('otp')->find($userId);
