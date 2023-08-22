@@ -8,7 +8,6 @@ use App\Http\Controllers\Api\FollowingController;
 use App\Http\Controllers\Api\LikeController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\PostController;
-use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
 //--- Auth module ---
@@ -46,6 +45,8 @@ Route::post('comment/like', LikeController::class)->middleware('auth:sanctum')->
 
 //--- Following module ---
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('follow/{followedUser}', [FollowingController::class, 'store'])->middleware('auth:sanctum');
-    Route::delete('unfollow/{followedUser}', [FollowingController::class, 'destroy'])->middleware('auth:sanctum');
+    Route::get('followed', [FollowingController::class, 'index'])->name('followed.index');
+    Route::get('followers', [FollowingController::class, 'index'])->name('followers.index');
+    Route::post('follow/{followedUserId}', [FollowingController::class, 'store']);
+    Route::delete('unfollow/{followedUser}', [FollowingController::class, 'destroy']);
 });

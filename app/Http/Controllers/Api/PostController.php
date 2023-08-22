@@ -11,7 +11,6 @@ use App\Models\Post;
 use App\Models\PostImages;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
@@ -115,7 +114,7 @@ class PostController extends Controller
             return ApiResponse::send(200, 'Post not found', []);
         }
 
-        if (!Auth()->user()->can('has-post', $post)) {
+        if (! Auth()->user()->can('has-post', $post)) {
             return ApiResponse::send(403, 'You are not allowed to take this action', null);
         }
 
