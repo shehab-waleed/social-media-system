@@ -48,6 +48,6 @@ Route::post('comment/like', LikeController::class)->middleware('auth:sanctum')->
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('followed', [FollowingController::class, 'index'])->name('followed.index');
     Route::get('followers', [FollowingController::class, 'index'])->name('followers.index');
-    Route::post('follow/{followedUserId}', [FollowingController::class, 'store']);
+    Route::post('follow/{followedUser}', [FollowingController::class, 'store']);
     Route::delete('unfollow/{followedUser}', [FollowingController::class, 'destroy']);
 });

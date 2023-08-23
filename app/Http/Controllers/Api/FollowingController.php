@@ -28,10 +28,8 @@ class FollowingController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store($followedUserId)
+    public function store(User $followedUser)
     {
-        $followedUser = User::findOrFail($followedUserId);
-
         if (! Auth::user()->following()->pluck('followed_id')->contains($followedUser->id)) {
             Auth::user()->following()->attach($followedUser->id);
             Notification::send($followedUser, new FollowingNotification(auth()->user()));
