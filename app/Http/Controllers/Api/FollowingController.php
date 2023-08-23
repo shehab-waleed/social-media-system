@@ -35,7 +35,7 @@ class FollowingController extends Controller
             Notification::send($followedUser, new FollowingNotification(auth()->user()));
         }
 
-        return ApiResponse::send(201, 'User followed successfully . ', null);
+        return ApiResponse::send(201, 'User followed successfully . ', ['is_followed' => true]);
     }
 
     /**
@@ -45,6 +45,6 @@ class FollowingController extends Controller
     {
         Auth::user()->following()->detach($followedUser->id);
 
-        return ApiResponse::send(200, 'User un followed successfully . ', null);
+        return ApiResponse::send(200, 'User un followed successfully . ', ['is_followed' => false]);
     }
 }

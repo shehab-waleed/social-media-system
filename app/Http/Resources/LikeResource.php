@@ -17,6 +17,7 @@ class LikeResource extends JsonResource
         return [
             "$this->likedAt Id" => $this->likedAt == 'Post' ? $this->post_id : $this->comment_id,
             'User Id' => $this->user_id,
+            'is_liked' => true
         ];
     }
 }

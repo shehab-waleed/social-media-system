@@ -39,12 +39,12 @@ class LikeController extends Controller
 
         $postLike = auth()->user()->postsLikes->where('post_id', $postId)->first();
         $post = Post::with('author')->find($postId);
-        
+
         if ($postLike) {
             $postLike->delete();
             $post->likes_num > 0 ? $post->decrement('likes_num') : '';
 
-            return ApiResponse::send(200, 'Post Unliked successfully .', null);
+            return ApiResponse::send(200, 'Post Unliked successfully .', ['is_liked' => false]);
         } else {
             $post->increment('likes_num');
             $like = PostLike::create([
@@ -68,7 +68,7 @@ class LikeController extends Controller
             $commentLike->delete();
             $comment->likes_num > 0 ? $comment->decrement('likes_num') : '';
 
-            return ApiResponse::send(200, 'Comment Unliked successfully .', null);
+            return ApiResponse::send(200, 'Comment Unliked successfully .', ['is_liked' => false]);
         } else {
             $comment->increment('likes_num');
             $like = CommentLike::create([

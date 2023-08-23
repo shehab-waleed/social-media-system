@@ -37,17 +37,18 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 Route::prefix('notifications')->middleware('auth:sanctum')->group(function () {
     Route::get('', [NotificationController::class, 'index']);
     Route::get('read-all', [NotificationController::class, 'readAll']);
-
 });
 
 //--- Likes module ---
-Route::post('post/like', LikeController::class)->middleware('auth:sanctum')->name('post.like');
-Route::post('comment/like', LikeController::class)->middleware('auth:sanctum')->name('comment.like');
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('post/like', LikeController::class)->name('post.like');
+    Route::post('comment/like', LikeController::class)->name('comment.like');
+});
 
 //--- Following module ---
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('followed', [FollowingController::class, 'index'])->name('followed.index');
-    Route::get('followers', [FollowingController::class, 'index'])->name('followers.index');
-    Route::post('follow/{followedUser}', [FollowingController::class, 'store']);
-    Route::delete('unfollow/{followedUser}', [FollowingController::class, 'destroy']);
+Route::controller(FollowingController::class)->middleware('auth:sanctum')->group(function () {
+    Route::get('followed', 'index')->name('followed.index');
+    Route::get('followers', 'index')->name('followers.index');
+    Route::post('follow/{followedUser}', 'store');
+    Route::delete('unfollow/{followedUser}', 'destroy');
 });
