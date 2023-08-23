@@ -39,7 +39,7 @@ class LikeController extends Controller
 
         $postLike = auth()->user()->postsLikes->where('post_id', $postId)->first();
         $post = Post::with('author')->find($postId);
-
+        
         if ($postLike) {
             $postLike->delete();
             $post->likes_num > 0 ? $post->decrement('likes_num') : '';

@@ -37,6 +37,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 Route::prefix('notifications')->middleware('auth:sanctum')->group(function () {
     Route::get('', [NotificationController::class, 'index']);
     Route::get('read-all', [NotificationController::class, 'readAll']);
+
 });
 
 //--- Likes module ---

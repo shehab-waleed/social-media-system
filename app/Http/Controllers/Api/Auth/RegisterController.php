@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
+use App\Helpers\OTP;
+use App\Models\User;
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreRegisterRequest;
 use App\Http\Resources\UserResource;
-use App\Models\OTP;
-use App\Models\User;
+use App\Notifications\OtpNotification;
+use App\Http\Requests\StoreRegisterRequest;
 
 class RegisterController extends Controller
 {
@@ -23,7 +24,9 @@ class RegisterController extends Controller
 
         $validatedData = $request->validated();
         $user = User::create($validatedData);
-        OTP::generate($user->id);
+        
+        $otp = OTP::generate($user->id);
+        $user->notify(new OtpNotification($otp->code));
 
         $user->token = $user->createToken('userToken')->plainTextToken;
         $user->photo = $photoPath ?? null;
