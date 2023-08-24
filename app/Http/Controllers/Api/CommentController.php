@@ -43,11 +43,7 @@ class CommentController extends Controller
         $data = $request->validated();
         $data['user_id'] = $request->user()->id;
 
-        $post = Post::find($data['post_id']);
-
-        if (! $post) {
-            return ApiResponse::send(404, 'Post not found', []);
-        }
+        $post = Post::findOrFail($data['post_id'])->with('author')->first();
 
         $comment = Comment::create($data);
 
