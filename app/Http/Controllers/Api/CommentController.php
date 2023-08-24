@@ -22,7 +22,7 @@ class CommentController extends Controller
 
         $post = Post::with('comments')->find($postId);
         if (! $post) {
-            return ApiResponse::send(200, 'Post not found', []);
+            return ApiResponse::send(404, 'Post not found', []);
         }
 
         $comments = Comment::where('post_id', $postId)->with('author')->get();
@@ -30,7 +30,7 @@ class CommentController extends Controller
         if (count($comments) > 0) {
             return ApiResponse::send(200, 'Comments retireved successfully .', CommentResource::collection($comments));
         } else {
-            return ApiResponse::send(200, 'Post does not contains any comments', []);
+            return ApiResponse::send(204, 'Post does not contains any comments', []);
         }
     }
 
@@ -46,7 +46,7 @@ class CommentController extends Controller
         $post = Post::find($data['post_id']);
 
         if (! $post) {
-            return ApiResponse::send(200, 'Post not found', []);
+            return ApiResponse::send(404, 'Post not found', []);
         }
 
         $comment = Comment::create($data);
@@ -54,7 +54,7 @@ class CommentController extends Controller
         Notification::send($post->author, new CommentNotification($data['post_id']));
 
         if ($comment) {
-            return ApiResponse::send(200, 'Comment Created successfully . ', new CommentResource($comment));
+            return ApiResponse::send(201, 'Comment Created successfully . ', new CommentResource($comment));
         }
     }
 
@@ -73,7 +73,7 @@ class CommentController extends Controller
         }
 
         if (! $comment) {
-            return ApiResponse::send(200, 'Comment not found', null);
+            return ApiResponse::send(404, 'Comment not found', null);
         }
 
         $comment->update($commentNewData);
@@ -88,10 +88,7 @@ class CommentController extends Controller
     public function destroy(string $id)
     {
         //
-        $comment = Comment::find($id);
-        if (! $comment) {
-            return ApiResponse::send(200, 'The comment does not exists. ', []);
-        }
+        $comment = Comment::findOrFail($id);
 
         if (! Auth()->user()->can('has-comment', $comment)) {
             return ApiResponse::send(403, 'You are not allow to take this action', []);
@@ -99,6 +96,6 @@ class CommentController extends Controller
 
         $comment->delete();
 
-        return ApiResponse::send(200, 'Comment removed successfully . ');
+        return ApiResponse::send(204, 'Comment removed successfully . ');
     }
 }

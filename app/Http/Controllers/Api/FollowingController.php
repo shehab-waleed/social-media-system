@@ -45,6 +45,6 @@ class FollowingController extends Controller
     {
         Auth::user()->following()->detach($followedUser->id);
 
-        return ApiResponse::send(200, 'User un followed successfully . ', ['is_followed' => false]);
+        return ApiResponse::send(200, 'User unfollowed successfully . ', ['is_followed' => false]);
     }
 }

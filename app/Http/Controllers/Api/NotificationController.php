@@ -15,7 +15,7 @@ class NotificationController extends Controller
         $notifications = auth()->user()->notifications;
 
         if ($notifications->count() == 0) {
-            return ApiResponse::send(200, 'User does not have any notifications', []);
+            return ApiResponse::send(204, 'User does not have any notifications');
         } else {
             return ApiResponse::send(200, 'Notificaitons retireved successfully. ', $notifications);
         }
@@ -26,7 +26,7 @@ class NotificationController extends Controller
         $user = auth()->user();
 
         if ($user->unreadNotifications()->count() == 0) {
-            return ApiResponse::send(200, 'User does not has any unread notifications .', []);
+            return ApiResponse::send(204, 'User does not has any unread notifications .');
         } else {
             foreach ($user->notifications as $notification) {
                 $notification->markAsRead();

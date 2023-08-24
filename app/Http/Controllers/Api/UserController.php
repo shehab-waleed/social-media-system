@@ -26,7 +26,7 @@ class UserController extends Controller
         if ($users->count() > 0) {
             return ApiResponse::send(200, 'Users retireved successfully .', UserResource::collection($users));
         } else {
-            return ApiResponse::send(200, 'No users exists .', []);
+            return ApiResponse::send(404, 'No users exists .');
         }
 
     }
@@ -40,9 +40,9 @@ class UserController extends Controller
         $record = User::create($request->validated());
 
         if ($record) {
-            return ApiResponse::send(200, 'User Created successfully .', new UserResource($record));
+            return ApiResponse::send(201, 'User Created successfully .', new UserResource($record));
         } else {
-            return ApiResponse::send(200, 'Something went wrong .', []);
+            return ApiResponse::send(500, 'Something went wrong .', []);
         }
     }
 
@@ -52,25 +52,16 @@ class UserController extends Controller
     public function show(string $id)
     {
         //
-        $user = User::find($id);
+        $user = User::findOrFail($id);
 
-        if ($user) {
-            return ApiResponse::send(200, 'User retrieved successfully .', new UserResource($user));
-        } else {
-            return ApiResponse::send(200, 'User not found .', null);
-        }
+        return ApiResponse::send(200, 'User retrieved successfully .', new UserResource($user));
     }
-
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
     {
-        $user = User::find($id);
-
-        if (! $user) {
-            return ApiResponse::send(200, 'User not found', null);
-        }
+        $user = User::findOrFail($id);
 
         $newData = $request->validate([
             'first_name' => 'string',
@@ -92,14 +83,10 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        $user = User::find($id);
-
-        if (! $user) {
-            return ApiResponse::send(200, 'User not found', null);
-        }
+        $user = User::findOrFail($id);
 
         $user->delete();
 
-        return ApiResponse::send(200, 'User deleted successfully .', null);
+        return ApiResponse::send(204, 'User deleted successfully .');
     }
 }

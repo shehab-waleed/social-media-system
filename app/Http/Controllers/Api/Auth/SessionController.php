@@ -36,6 +36,6 @@ class SessionController extends Controller
         //
         $request->user()->currentAccessToken()->delete();
 
-        return ApiResponse::send(200, 'Logged out successfully .', []);
+        return ApiResponse::send(204, 'Logged out successfully .', []);
     }
 }

@@ -38,7 +38,7 @@ class LikeController extends Controller
     {
 
         $postLike = auth()->user()->postsLikes->where('post_id', $postId)->first();
-        $post = Post::with('author')->find($postId);
+        $post = Post::with('author')->findOrFail($postId);
 
         if ($postLike) {
             $postLike->delete();
@@ -62,7 +62,7 @@ class LikeController extends Controller
     private function likeComment($commentId)
     {
         $commentLike = auth()->user()->commentsLikes->where('comment_id', $commentId)->first();
-        $comment = Comment::with('author')->find($commentId);
+        $comment = Comment::with('author')->findOrFail($commentId);
 
         if ($commentLike) {
             $commentLike->delete();

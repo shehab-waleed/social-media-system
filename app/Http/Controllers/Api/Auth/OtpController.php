@@ -18,7 +18,7 @@ class OtpController extends Controller
         ]);
 
         if (!OTP::verify($data['otp'])) {
-            return ApiResponse::send(200, 'There is an error in OTP code', ['is_verified' => false]);
+            return ApiResponse::send(422, 'There is an error in OTP code', ['is_verified' => false]);
         }
 
         return ApiResponse::send(200, 'Account verified successfully', ['is_verified' => true]);
@@ -33,6 +33,6 @@ class OtpController extends Controller
         $otp = OTP::generate(Auth::user()->id);
         Auth::user()->notify(new OtpNotification($otp->code));
         return ApiResponse::send(201, 'OTP generated successfully .');
-        
+
     }
 }

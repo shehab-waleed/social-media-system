@@ -46,7 +46,7 @@ class PostController extends Controller
             return ApiResponse::send(200, 'Posts retrieved successfully .', $data);
 
         } else {
-            return ApiResponse::send(200, 'No posts found', []);
+            return ApiResponse::send(404, 'No posts found', []);
         }
     }
 
@@ -58,7 +58,7 @@ class PostController extends Controller
             return ApiResponse::send(200, 'Posts retireved successfully . ', PostResource::collection($posts));
         }
 
-        return ApiResponse::send(200, 'No posts found', []);
+        return ApiResponse::send(404, 'No posts found', []);
     }
 
     /**
@@ -85,7 +85,7 @@ class PostController extends Controller
         if ($record) {
             return ApiResponse::send(201, 'Post created successfully .', new PostResource($record));
         } else {
-            return ApiResponse::send(200, 'Somthing went wrong', []);
+            return ApiResponse::send(500, 'Somthing went wrong', []);
         }
     }
 
@@ -97,7 +97,7 @@ class PostController extends Controller
         $post = Post::with('author', 'comments', 'images')->find($id);
 
         if (! $post) {
-            return ApiResponse::send(200, 'Post not found', null);
+            return ApiResponse::send(404, 'Post not found', null);
         }
 
         return ApiResponse::send(200, 'Post retireved successfully . ', new PostResource($post));
@@ -111,7 +111,7 @@ class PostController extends Controller
         $post = Post::find($id);
 
         if (! $post) {
-            return ApiResponse::send(200, 'Post not found', []);
+            return ApiResponse::send(404, 'Post not found', []);
         }
 
         if (! Auth()->user()->can('has-post', $post)) {
@@ -120,9 +120,9 @@ class PostController extends Controller
 
         $updatedPost = $post->update($request->validated());
         if ($updatedPost) {
-            return ApiResponse::send(201, 'Post updated successfully .', new PostResource($post));
+            return ApiResponse::send(200, 'Post updated successfully .', new PostResource($post));
         } else {
-            return ApiResponse::send(200, 'Something went wrong . ', null);
+            return ApiResponse::send(500, 'Something went wrong . ', null);
         }
     }
 
@@ -135,7 +135,7 @@ class PostController extends Controller
         $post = Post::with('images')->find($id);
 
         if (! $post) {
-            return ApiResponse::send(200, 'Post not found', []);
+            return ApiResponse::send(404, 'Post not found', []);
         }
 
         if (! Auth()->user()->can('has-post', $post)) {
@@ -148,6 +148,6 @@ class PostController extends Controller
         }
         $post->delete();
 
-        return ApiResponse::send(200, 'Post deleted successfully . ', []);
+        return ApiResponse::send(204, 'Post deleted successfully . ', []);
     }
 }

@@ -24,7 +24,7 @@ class RegisterController extends Controller
 
         $validatedData = $request->validated();
         $user = User::create($validatedData);
-        
+
         $otp = OTP::generate($user->id);
         $user->notify(new OtpNotification($otp->code));
 
