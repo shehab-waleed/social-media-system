@@ -2,10 +2,8 @@
 
 namespace App\Models;
 
-use App\Notifications\OtpNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
 
 class OTP extends Model
 {
@@ -19,6 +17,4 @@ class OTP extends Model
     {
         return $this->belongsTo(User::class);
     }
-
-
 }

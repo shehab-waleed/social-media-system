@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
-use App\Helpers\OTP;
 use App\Helpers\ApiResponse;
-use Illuminate\Http\Request;
+use App\Helpers\OTP;
 use App\Http\Controllers\Controller;
 use App\Notifications\OtpNotification;
 use Auth;
+use Illuminate\Http\Request;
 
 class OtpController extends Controller
 {
@@ -17,7 +17,7 @@ class OtpController extends Controller
             'otp' => ['required', 'min:1', 'max:5'],
         ]);
 
-        if (!OTP::verify($data['otp'])) {
+        if (! OTP::verify($data['otp'])) {
             return ApiResponse::send(422, 'There is an error in OTP code', ['is_verified' => false]);
         }
 
@@ -32,6 +32,7 @@ class OtpController extends Controller
 
         $otp = OTP::generate(Auth::user()->id);
         Auth::user()->notify(new OtpNotification($otp->code));
+
         return ApiResponse::send(201, 'OTP generated successfully .');
 
     }

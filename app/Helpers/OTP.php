@@ -5,10 +5,9 @@ namespace App\Helpers;
 use App\Models\OTP as ModelsOTP;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use App\Notifications\OtpNotification;
 
-class OTP{
-
+class OTP
+{
     public static function generate(int $userId)
     {
         $user = User::with('otp')->find($userId);

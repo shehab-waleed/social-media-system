@@ -56,6 +56,7 @@ class UserController extends Controller
 
         return ApiResponse::send(200, 'User retrieved successfully .', new UserResource($user));
     }
+
     /**
      * Update the specified resource in storage.
      */
