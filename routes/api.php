@@ -1,14 +1,15 @@
 <?php
 
-use App\Http\Controllers\Api\Auth\OtpController;
-use App\Http\Controllers\Api\Auth\RegisterController;
-use App\Http\Controllers\Api\Auth\SessionController;
-use App\Http\Controllers\Api\CommentController;
-use App\Http\Controllers\Api\FollowingController;
-use App\Http\Controllers\Api\LikeController;
-use App\Http\Controllers\Api\NotificationController;
-use App\Http\Controllers\Api\PostController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\LikeController;
+use App\Http\Controllers\Api\PostController;
+use App\Http\Controllers\Api\TestController;
+use App\Http\Controllers\Api\CommentController;
+use App\Http\Controllers\Api\Auth\OtpController;
+use App\Http\Controllers\Api\FollowingController;
+use App\Http\Controllers\Api\Auth\SessionController;
+use App\Http\Controllers\Api\NotificationController;
+use App\Http\Controllers\Api\Auth\RegisterController;
 
 //--- Auth module ---
 Route::middleware('guest')->group(function () {
@@ -52,3 +53,5 @@ Route::controller(FollowingController::class)->middleware('auth:sanctum')->group
     Route::post('follow/{followedUser}', 'store');
     Route::delete('unfollow/{followedUser}', 'destroy');
 });
+
+
