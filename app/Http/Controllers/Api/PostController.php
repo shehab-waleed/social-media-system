@@ -21,9 +21,7 @@ class PostController extends Controller
     public function index()
     {
         //
-        $posts = Cache::remember('posts', 60 * 30, function () {
-            return Post::latest()->filter(request(['user_id', 'title']))->with('author', 'comments', 'images')->paginate(10);
-        });
+        $posts = Post::filter(request(['user_id', 'title']))->with('author', 'comments', 'images')->paginate(10);
 
         if ($posts->count()) {
             if ($posts->total() > $posts->perPage()) {
@@ -52,12 +50,10 @@ class PostController extends Controller
 
     public function latest()
     {
-        $posts = Post::latest()->filter(request(['user_id']))->take(5)->get();
-
+        $posts = Post::filter(request(['user_id']))->take(5)->get();
         if (count($posts) > 0) {
             return ApiResponse::send(200, 'Posts retireved successfully . ', PostResource::collection($posts));
         }
-
         return ApiResponse::send(404, 'No posts found', []);
     }
 

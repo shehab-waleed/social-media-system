@@ -54,6 +54,7 @@ class Post extends Model
             $query->where('title', 'like', '%'.$title.'%');
         });
 
+        
     }
 
     public function author()

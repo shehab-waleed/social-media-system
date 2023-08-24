@@ -22,10 +22,10 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::post('otp/generate', [OtpController::class, 'generate'])->name('otp.generate');
 
 //--- Posts module ---
-Route::apiResource('posts', PostController::class)->middleware(['auth:sanctum', 'verified']);
 Route::prefix('posts')->middleware('auth:sanctum')->group(function () {
     Route::get('latest', [PostController::class, 'latest']);
 });
+Route::apiResource('posts', PostController::class)->middleware(['auth:sanctum', 'verified']);
 
 //--- Comments module ---
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
