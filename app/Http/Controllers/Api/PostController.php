@@ -10,7 +10,6 @@ use App\Http\Resources\PostResource;
 use App\Models\Post;
 use App\Models\PostImages;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
@@ -20,7 +19,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+
         $posts = Post::filter(request(['user_id', 'title']))->with('author', 'comments', 'images')->paginate(10);
 
         if ($posts->count()) {
@@ -54,6 +53,7 @@ class PostController extends Controller
         if (count($posts) > 0) {
             return ApiResponse::send(200, 'Posts retireved successfully . ', PostResource::collection($posts));
         }
+
         return ApiResponse::send(404, 'No posts found', []);
     }
 

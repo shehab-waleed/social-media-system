@@ -30,7 +30,10 @@ class PostImages extends Model
 {
     use HasFactory;
 
-    public $guarded = [];
+    public $fillable = [
+        'post_id',
+        'image'
+    ];
 
     public function post()
     {

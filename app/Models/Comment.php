@@ -39,7 +39,11 @@ class Comment extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $fillable = [
+        'body',
+        'post_id',
+        'parent_id'
+    ];
 
     public function post()
     {

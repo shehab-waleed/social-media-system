@@ -41,7 +41,6 @@ class StoreRegisterRequest extends FormRequest
             'email' => ['email', 'required', 'unique:users,email'],
             'country' => ['required'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'is_admin' => ['boolean'],
             'photo' => ['image'],
         ];
     }

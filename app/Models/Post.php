@@ -42,7 +42,11 @@ class Post extends Model
 {
     use HasFactory;
 
-    public $guarded = [];
+    public $fillable = [
+        'title',
+        'body',
+        'user_id'
+    ];
 
     public function scopeFilter($query, array $filters)
     {
@@ -54,7 +58,6 @@ class Post extends Model
             $query->where('title', 'like', '%'.$title.'%');
         });
 
-        
     }
 
     public function author()

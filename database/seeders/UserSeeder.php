@@ -27,7 +27,7 @@ class UserSeeder extends Seeder
             ];
         }
 
-        foreach(array_chunk($data , 5000) as $chunk){
+        foreach (array_chunk($data, 5000) as $chunk) {
             User::insert($chunk);
         }
     }

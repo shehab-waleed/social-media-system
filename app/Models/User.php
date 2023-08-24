@@ -71,7 +71,15 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @var array<int, string>
      */
-    protected $guarded = [];
+    protected $fillable = [
+        'first_name',
+        'last_name',
+        'username',
+        'email',
+        'password',
+        'country',
+        'photo',
+    ];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -83,10 +91,10 @@ class User extends Authenticatable implements MustVerifyEmail
         'remember_token',
     ];
 
-    protected function setPasswordAttribute($password)
-    {
-        $this->attributes['password'] = bcrypt($password);
-    }
+    // protected function setPasswordAttribute($password)
+    // {
+    //     $this->attributes['password'] = bcrypt($password);
+    // }
 
     /**
      * The attributes that should be cast.
@@ -120,7 +128,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function otp()
     {
-        return $this->hasOne(Otp::class);
+        return $this->hasOne(OTP::class);
     }
 
     public function following()
