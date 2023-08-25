@@ -1,53 +1,62 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\PostController;
-use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\Auth\OtpController;
+use App\Http\Controllers\Api\Auth\RegisterController;
+use App\Http\Controllers\Api\Auth\SessionController;
 use App\Http\Controllers\Api\CommentController;
-use App\Http\Controllers\Api\SessionController;
-use App\Http\Controllers\Api\RegisterController;
+use App\Http\Controllers\Api\FollowingController;
+use App\Http\Controllers\api\FriendController;
+use App\Http\Controllers\api\FriendRequestController;
+use App\Http\Controllers\Api\LikeController;
 use App\Http\Controllers\Api\NotificationController;
-
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
-
+use App\Http\Controllers\Api\PostController;
+use Illuminate\Support\Facades\Route;
 
 //--- Auth module ---
-Route::post('login', [SessionController::class, 'store'])->name('login');
-Route::post('logout', [SessionController::class, 'destroy'])->middleware('auth:sanctum');
-Route::post('register', [RegisterController::class, 'store']);
-
+Route::middleware('guest')->group(function () {
+    Route::post('login', [SessionController::class, 'store'])->name('login');
+    Route::post('register', [RegisterController::class, 'store'])->name('register');
+});
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('logout', [SessionController::class, 'destroy'])->name('logout');
+    Route::post('otp/verify', [OtpController::class, 'verify'])->name('otp.verify');
+});
+Route::post('otp/generate', [OtpController::class, 'generate'])->name('otp.generate');
 
 //--- Posts module ---
-Route::apiResource('posts', PostController::class)->middleware('auth:sanctum');
 Route::prefix('posts')->middleware('auth:sanctum')->group(function () {
     Route::get('latest', [PostController::class, 'latest']);
 });
-
+Route::apiResource('posts', PostController::class)->middleware(['auth:sanctum', 'verified']);
 
 //--- Comments module ---
-Route::get('comments/{postId}', [CommentController::class, 'index']);
-Route::apiResource('comments', CommentController::class)->only('store', 'destroy' , 'update')->middleware('auth:sanctum');
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::get('comments/{postId}', [CommentController::class, 'index']);
+    Route::apiResource('comments', CommentController::class)->only('store', 'destroy', 'update');
+});
 
-
-//--- Noficications module ---
+//--- Notifications module ---
 Route::prefix('notifications')->middleware('auth:sanctum')->group(function () {
     Route::get('', [NotificationController::class, 'index']);
     Route::get('read-all', [NotificationController::class, 'readAll']);
 });
 
-
-//--- Admin module ---
-Route::prefix('admin')->middleware(['auth:sanctum', 'can:admin'])->group(function () {
-    Route::apiResource('users', UserController::class)->middleware(['auth:sanctum', 'can:admin']);
+//--- Likes module ---
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('post/like', LikeController::class)->name('post.like');
+    Route::post('comment/like', LikeController::class)->name('comment.like');
 });
 
-
+//--- Following module ---
+Route::controller(FollowingController::class)->middleware('auth:sanctum')->group(function () {
+    Route::get('followed', 'index')->name('followed.index');
+    Route::get('followers', 'index')->name('followers.index');
+    Route::post('follow/{followedUser}', 'store');
+    Route::delete('unfollow/{followedUser}', 'destroy');
+});
+//--- Friend module ---
+Route::prefix('friend')->controller(FriendController::class)->middleware('auth:sanctum')->group(function () {
+    Route::post('send-request', 'sendRequest');
+    Route::post('/accept-request/{request}', 'acceptRequest');
+    Route::post('/reject-request/{request}', 'rejectRequest');
+});

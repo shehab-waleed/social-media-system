@@ -32,13 +32,12 @@ class StoreLoginRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
      */
-
     public function rules(): array
     {
         return [
             //
-            'email' => ['email', 'required',],
-            'password' => ['required', Rules\Password::defaults()]
+            'email' => ['email', 'required'],
+            'password' => ['required', Rules\Password::defaults()],
         ];
     }
 }

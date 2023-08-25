@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('user_id');
             $table->integer('parent_id')->nullable();
             $table->text('body');
+            $table->unsignedInteger('likes_num')->default(0);
             $table->timestamps();
         });
     }

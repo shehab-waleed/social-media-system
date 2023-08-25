@@ -3,10 +3,10 @@
 namespace App\Http\Requests;
 
 use App\Helpers\ApiResponse;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Contracts\Validation\Validator;
 
 class StoreCommentRequest extends FormRequest
 {
@@ -37,8 +37,8 @@ class StoreCommentRequest extends FormRequest
         return [
             //
             'body' => ['required', 'min:3', 'max:100'],
-            'post_id' => ['required' , 'integer' , 'exists:posts,id'],
-            'parent_id' => [ 'integer' , 'exists:comments,id']
+            'post_id' => ['required', 'integer', 'exists:posts,id'],
+            'parent_id' => ['integer', 'exists:comments,id'],
         ];
     }
 }

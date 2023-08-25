@@ -2,7 +2,8 @@
 
 namespace App\Providers;
 
-use App\Models\Post;
+use App\Models\User;
+use App\Observers\UserObserver;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -22,16 +23,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
 
-        Gate::define('has-post', function ($user, $post) {
-            return $user->id == $post->user_id;
-        });
+        Gate::define('admin', fn ($user) => auth()->user()->is_admin);
+        Gate::define('has-post', fn ($user, $post) => $user->id == $post->user_id);
+        Gate::define('has-comment', fn ($user, $comment) => $user->id == $comment->user_id);
 
-        Gate::define('has-comment', function ($user, $comment) {
-            return $user->id == $comment->user_id;
-        });
-
-        Gate::define('admin', function ($user) {
-            return auth()->user()->is_admin;
-        });
+        // Observers
+        User::observe(UserObserver::class);
     }
 }

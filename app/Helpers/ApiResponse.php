@@ -2,17 +2,16 @@
 
 namespace App\Helpers;
 
-class ApiResponse{
-
-    static function send($code = 200, $msg = null, $data = null)
+class ApiResponse
+{
+    public static function send($code = 200, $msg = null, $data = null)
     {
         $response = [
             'status' => $code,
             'msg' => $msg,
-            'data' => $data
+            'data' => $data,
         ];
 
         return response()->json($response, $code);
     }
 }
-

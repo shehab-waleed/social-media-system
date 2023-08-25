@@ -25,9 +25,8 @@ class UpdatePostRequest extends FormRequest
 
             throw new ValidationException($validator, $response);
         }
-        ;
-    }
 
+    }
 
     /**
      * Get the validation rules that apply to the request.
