@@ -15,11 +15,7 @@ return [
     |
     */
 
-<<<<<<< HEAD
-    'paths' => ['api/*', 'sanctum/csrf-cookie' , '*'],
-=======
     'paths' => ['api/*', 'sanctum/csrf-cookie', '*'],
->>>>>>> refs/remotes/origin/main
 
     'allowed_methods' => ['*'],
 

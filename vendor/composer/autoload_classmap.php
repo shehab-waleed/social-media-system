@@ -46,10 +46,7 @@ return array(
     'App\\Models\\Notification' => $baseDir . '/app/Models/Notification.php',
     'App\\Models\\Post' => $baseDir . '/app/Models/Post.php',
     'App\\Models\\PostImages' => $baseDir . '/app/Models/PostImages.php',
-<<<<<<< HEAD
-=======
     'App\\Models\\PostLike' => $baseDir . '/app/Models/PostLike.php',
->>>>>>> refs/remotes/origin/main
     'App\\Models\\User' => $baseDir . '/app/Models/User.php',
     'App\\Notifications\\CommentLoveNotification' => $baseDir . '/app/Notifications/CommentLoveNotification.php',
     'App\\Notifications\\CommentNotification' => $baseDir . '/app/Notifications/CommentNotification.php',
