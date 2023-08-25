@@ -24,15 +24,8 @@ class FriendRequestSent extends Notification
 
     public function toArray($notifiable)
     {
-        $senderName = $this->friendRequest->sender()->name;
-
-        if ($this->status === 'accepted') {
-            $message = "Your friend request from {$senderName} has been accepted.";
-        } elseif ($this->status === 'rejected') {
-            $message = "Your friend request from {$senderName} has been rejected.";
-        } else {
-            $message = "You have received a friend request from {$senderName}.";
-        }
+        $senderName = $this->friendRequest->sender->first_name;
+        $message = "You have received a friend request from {$senderName}.";
 
         return [
             'friend_request_id' => $this->friendRequest->id,

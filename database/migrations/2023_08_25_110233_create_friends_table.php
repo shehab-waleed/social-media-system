@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('friends', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('sender_id')->references('id')->on('users')->cascadeOnDelete();
-            $table->foreignId('receiver_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->foreignId('friend_id')->references('id')->on('users')->cascadeOnDelete();
             $table->timestamps();
         });
+        //userfriends
     }
 
     /**
