@@ -61,11 +61,10 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePostRequest $request , PostService $postService)
+    public function store(StorePostRequest $request, PostService $postService)
     {
         $postData = $request->validated();
-        $post = $postService->store($request->user()->id, $postData['title'] , $postData['body'] , $request->images);
-
+        $post = $postService->store($request->user()->id, $postData['title'], $postData['body'], $request->images);
 
         if ($post) {
             return ApiResponse::send(201, 'Post created successfully .', new PostResource($post));
@@ -107,21 +106,13 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request, $id)
+    public function destroy(Request $request, $id, PostService $postService)
     {
-        //
         $post = Post::with('images')->findOrFail($id);
 
-        if (!Auth()->user()->can('has-post', $post)) {
-            return ApiResponse::send(403, 'You are not authorized to take this action', []);
-        }
-
-        foreach ($post->images as $element) {
-            Storage::delete($element->image);
-            $element->delete();
-        }
-        $post->delete();
-
-        return ApiResponse::send(204, 'Post deleted successfully . ', []);
+        if ($postService->destroy($post))
+            return ApiResponse::send(200, 'Post deleted successfully . ', []);
+        else
+            return ApiResponse::send(500, 'Something went wrong. ');
     }
 }
