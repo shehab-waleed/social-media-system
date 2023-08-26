@@ -9,6 +9,7 @@ use App\Http\Requests\UpdatePostRequest;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
 use App\Models\PostImages;
+use App\Services\PostService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -60,26 +61,15 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePostRequest $request)
+    public function store(StorePostRequest $request , PostService $postService)
     {
+        // dd($request->images);
         $postData = $request->validated();
-        $postData['user_id'] = $request->user()->id;
-        unset($postData['images']);
-        $record = Post::create($postData);
+        $post = $postService->store($request->user()->id, $postData['title'] , $postData['body'] , $request->images);
 
-        if ($request->has('images')) {
-            foreach ($request->file('images') as $image) {
-                $imagePath = $image->store('post_images');
-                PostImages::create([
-                    'post_id' => $record->id,
-                    'image' => $imagePath,
-                ]);
-            }
 
-        }
-
-        if ($record) {
-            return ApiResponse::send(201, 'Post created successfully .', new PostResource($record));
+        if ($post) {
+            return ApiResponse::send(201, 'Post created successfully .', new PostResource($post));
         } else {
             return ApiResponse::send(500, 'Somthing went wrong', []);
         }
@@ -90,11 +80,7 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
-        $post = Post::with('author', 'comments', 'images')->find($id);
-
-        if (! $post) {
-            return ApiResponse::send(404, 'Post not found', null);
-        }
+        $post = Post::with('author', 'comments', 'images')->findOrFail($id);
 
         return ApiResponse::send(200, 'Post retireved successfully . ', new PostResource($post));
     }
@@ -104,17 +90,14 @@ class PostController extends Controller
      */
     public function update(UpdatePostRequest $request, $id)
     {
-        $post = Post::find($id);
+        $post = Post::findOrFail($id);
 
-        if (! $post) {
-            return ApiResponse::send(404, 'Post not found', []);
-        }
-
-        if (! Auth()->user()->can('has-post', $post)) {
+        if (!Auth()->user()->can('has-post', $post)) {
             return ApiResponse::send(403, 'You are not allowed to take this action', null);
         }
 
         $updatedPost = $post->update($request->validated());
+
         if ($updatedPost) {
             return ApiResponse::send(200, 'Post updated successfully .', new PostResource($post));
         } else {
@@ -128,13 +111,9 @@ class PostController extends Controller
     public function destroy(Request $request, $id)
     {
         //
-        $post = Post::with('images')->find($id);
+        $post = Post::with('images')->findOrFail($id);
 
-        if (! $post) {
-            return ApiResponse::send(404, 'Post not found', []);
-        }
-
-        if (! Auth()->user()->can('has-post', $post)) {
+        if (!Auth()->user()->can('has-post', $post)) {
             return ApiResponse::send(403, 'You are not authorized to take this action', []);
         }
 
