@@ -63,7 +63,6 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request , PostService $postService)
     {
-        // dd($request->images);
         $postData = $request->validated();
         $post = $postService->store($request->user()->id, $postData['title'] , $postData['body'] , $request->images);
 
