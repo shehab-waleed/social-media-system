@@ -14,4 +14,8 @@ class Like extends Model
     public function parent(){
         return $this->morphTo();
     }
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }

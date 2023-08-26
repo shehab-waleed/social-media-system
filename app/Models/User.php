@@ -126,6 +126,10 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(CommentLike::class);
     }
 
+    public function likes(){
+        return $this->hasMany(Like::class);
+    }
+
     public function otp()
     {
         return $this->hasOne(OTP::class);

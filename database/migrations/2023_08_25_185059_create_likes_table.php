@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('likes', function (Blueprint $table) {
             $table->id();
             $table->morphs('parent');
+            $table->foreignId('user_id');
             $table->timestamps();
         });
     }

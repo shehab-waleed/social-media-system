@@ -54,6 +54,7 @@ Route::controller(FollowingController::class)->middleware('auth:sanctum')->group
     Route::post('follow/{followedUser}', 'store');
     Route::delete('unfollow/{followedUser}', 'destroy');
 });
+
 //--- Friend module ---
 Route::prefix('friend')->controller(FriendController::class)->middleware('auth:sanctum')->group(function () {
     Route::post('send-request', 'sendRequest');
