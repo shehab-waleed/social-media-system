@@ -99,6 +99,8 @@ return array(
     'Clockwork\\' => array($vendorDir . '/itsgoingd/clockwork/Clockwork'),
     'Carbon\\' => array($vendorDir . '/nesbot/carbon/src/Carbon'),
     'Brick\\Math\\' => array($vendorDir . '/brick/math/src'),
+    'BeyondCode\\ErdGenerator\\' => array($vendorDir . '/beyondcode/laravel-er-diagram-generator/src'),
     'Barryvdh\\LaravelIdeHelper\\' => array($vendorDir . '/barryvdh/laravel-ide-helper/src'),
+    'App\\Helpers\\' => array($baseDir . '/app/helpers'),
     'App\\' => array($baseDir . '/app', $vendorDir . '/laravel/pint/app'),
 );
