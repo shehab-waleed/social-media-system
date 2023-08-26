@@ -79,4 +79,8 @@ class Post extends Model
     {
         return $this->hasMany(PostLike::class, 'post_id');
     }
+
+    public function likes(){
+        return $this->morphMany(Like::class, 'parent');
+    }
 }

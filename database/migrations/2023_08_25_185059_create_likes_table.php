@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('likes', function (Blueprint $table) {
             $table->id();
-            $table->morphs('like_at');
+            $table->morphs('parent');
             $table->timestamps();
         });
     }

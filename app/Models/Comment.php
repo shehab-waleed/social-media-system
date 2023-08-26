@@ -59,4 +59,8 @@ class Comment extends Model
     {
         return $this->hasMany(CommentLike::class, 'comment_id');
     }
+
+    public function likes(){
+        return $this->morphMany(Like::class , 'parent');
+    }
 }

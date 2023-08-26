@@ -14,7 +14,7 @@ class UserSeeder extends Seeder
     {
         // User::factory(1000)->create();
         $data = [];
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $data[] = [
                 'first_name' => fake()->name(),
                 'last_name' => fake()->name(),
