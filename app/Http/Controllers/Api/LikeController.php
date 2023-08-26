@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Post;
+use App\Models\Comment;
+use App\Models\PostLike;
+use App\Models\CommentLike;
 use App\Helpers\ApiResponse;
+use Illuminate\Http\Request;
+use App\Services\LikeService;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\LikeResource;
-use App\Models\Comment;
-use App\Models\CommentLike;
-use App\Models\Post;
-use App\Models\PostLike;
-use App\Notifications\CommentLoveNotification;
-use App\Notifications\PostLikeNotification;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Notifications\PostLikeNotification;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\CommentLoveNotification;
 
 class LikeController extends Controller
 {
@@ -36,25 +38,15 @@ class LikeController extends Controller
 
     private function likePost($postId)
     {
-
-        $postLike = auth()->user()->postsLikes->where('post_id', $postId)->first();
+        $likeService = new LikeService;
         $post = Post::with('author')->findOrFail($postId);
 
-        if ($postLike) {
-            $postLike->delete();
-            $post->likes_num > 0 ? $post->decrement('likes_num') : '';
+        $postLike = $likeService->storePostLike($post, Auth::user());
 
+        if($postLike){
+            return ApiResponse::send(201, 'Post liked successfully .', new LikeResource($postLike));
+        }else{
             return ApiResponse::send(200, 'Post Unliked successfully .', ['is_liked' => false]);
-        } else {
-            $post->increment('likes_num');
-            $like = PostLike::create([
-                'post_id' => $post->id,
-                'user_id' => auth()->user()->id,
-            ]);
-            $like->likedAt = 'Post';
-            Notification::send($post->author, new PostLikeNotification($post->id));
-
-            return ApiResponse::send(201, 'Post liked successfully .', new LikeResource($like));
         }
 
     }
