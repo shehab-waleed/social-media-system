@@ -15,7 +15,7 @@ class LikeResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            "$this->likedAt Id" => $this->likedAt == 'Post' ? $this->post_id : $this->comment_id,
+            "$this->likedAt Id" => $this->parent_id,
             'User Id' => $this->user_id,
             'is_liked' => true,
         ];

@@ -9,7 +9,7 @@ class Like extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['parent_type', 'parent_id'];
+    protected $fillable = ['parent_type', 'parent_id', 'user_id'];
 
     public function parent(){
         return $this->morphTo();
