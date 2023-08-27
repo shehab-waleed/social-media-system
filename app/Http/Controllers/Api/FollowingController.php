@@ -8,10 +8,8 @@ use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FollowingResource;
 use App\Models\User;
-use App\Notifications\FollowingNotification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Notification;
 
 class FollowingController extends Controller
 {
@@ -43,7 +41,7 @@ class FollowingController extends Controller
     public function destroy(User $followedUser)
     {
         (new UnfollowUserAction)->execute(Auth::user(), $followedUser->id);
-        
+
         return ApiResponse::send(200, 'User unfollowed successfully . ', ['is_followed' => false]);
     }
 }
