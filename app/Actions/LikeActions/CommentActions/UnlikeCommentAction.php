@@ -1,5 +1,5 @@
 <?php
-namespace App\Actions\LikeActions\Comment;
+namespace App\Actions\LikeActions\CommentActions;
 use App\Models\Comment;
 
 class UnlikeCommentAction

@@ -2,21 +2,18 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Actions\LikeActions\Comment\LikeCommentAction;
-use App\Actions\LikeActions\Comment\UnlikeCommentAction;
 use App\Models\Post;
 use App\Models\Comment;
-use App\Models\CommentLike;
 use App\Helpers\ApiResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\LikeResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Notification;
-use App\Notifications\CommentLoveNotification;
 use App\Actions\LikeActions\Post\LikePostAction;
 use App\Actions\LikeActions\Post\UnlikePostAction;
+use App\Actions\LikeActions\CommentActions\LikeCommentAction;
+use App\Actions\LikeActions\CommentActions\UnlikeCommentAction;
 
 class LikeController extends Controller
 {
