@@ -571,13 +571,10 @@ class ComposerStaticInit4687b97a5c7b96365be7efeee3b7d031
         array (
             0 => __DIR__ . '/..' . '/brick/math/src',
         ),
-<<<<<<< HEAD
-=======
         'BeyondCode\\ErdGenerator\\' => 
         array (
             0 => __DIR__ . '/..' . '/beyondcode/laravel-er-diagram-generator/src',
         ),
->>>>>>> refs/remotes/origin/main
         'Barryvdh\\LaravelIdeHelper\\' => 
         array (
             0 => __DIR__ . '/..' . '/barryvdh/laravel-ide-helper/src',
@@ -594,10 +591,6 @@ class ComposerStaticInit4687b97a5c7b96365be7efeee3b7d031
     );
 
     public static $prefixesPsr0 = array (
-<<<<<<< HEAD
-        'B' => 
-        array (
-=======
         'p' => 
         array (
             'phpDocumentor' => 
@@ -608,7 +601,6 @@ class ComposerStaticInit4687b97a5c7b96365be7efeee3b7d031
         ),
         'B' => 
         array (
->>>>>>> refs/remotes/origin/main
             'Barryvdh' => 
             array (
                 0 => __DIR__ . '/..' . '/barryvdh/reflection-docblock/src',
@@ -617,6 +609,12 @@ class ComposerStaticInit4687b97a5c7b96365be7efeee3b7d031
     );
 
     public static $classMap = array (
+        'App\\Actions\\LikeActions\\CommentActions\\LikeCommentAction' => __DIR__ . '/../..' . '/app/Actions/LikeActions/CommentActions/LikeCommentAction.php',
+        'App\\Actions\\LikeActions\\CommentActions\\UnlikeCommentAction' => __DIR__ . '/../..' . '/app/Actions/LikeActions/CommentActions/UnlikeCommentAction.php',
+        'App\\Actions\\LikeActions\\FollowingActions\\FollowUserAction' => __DIR__ . '/../..' . '/app/Actions/LikeActions/FollowingActions/FollowUserAction.php',
+        'App\\Actions\\LikeActions\\FollowingActions\\UnfollowUserAction' => __DIR__ . '/../..' . '/app/Actions/LikeActions/FollowingActions/UnfollowUserAction.php',
+        'App\\Actions\\LikeActions\\Post\\LikePostAction' => __DIR__ . '/../..' . '/app/Actions/LikeActions/Post/LikePostAction.php',
+        'App\\Actions\\LikeActions\\Post\\UnlikePostAction' => __DIR__ . '/../..' . '/app/Actions/LikeActions/Post/UnlikePostAction.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Helpers\\ApiResponse' => __DIR__ . '/../..' . '/app/Helpers/ApiResponse.php',
