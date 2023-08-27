@@ -6,7 +6,6 @@ use App\Http\Controllers\Api\Auth\SessionController;
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\FollowingController;
 use App\Http\Controllers\api\FriendController;
-use App\Http\Controllers\api\FriendRequestController;
 use App\Http\Controllers\Api\LikeController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\PostController;

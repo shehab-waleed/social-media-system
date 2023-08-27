@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Actions\LikeActions\FollowingActions\FollowUserAction;
+use App\Actions\LikeActions\FollowingActions\UnfollowUserAction;
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FollowingResource;
@@ -30,10 +32,7 @@ class FollowingController extends Controller
      */
     public function store(User $followedUser)
     {
-        if (! Auth::user()->following()->pluck('followed_id')->contains($followedUser->id)) {
-            Auth::user()->following()->attach($followedUser->id);
-            Notification::send($followedUser, new FollowingNotification(auth()->user()));
-        }
+        (new FollowUserAction)->execute(Auth::user(), $followedUser);
 
         return ApiResponse::send(201, 'User followed successfully . ', ['is_followed' => true]);
     }
@@ -43,8 +42,8 @@ class FollowingController extends Controller
      */
     public function destroy(User $followedUser)
     {
-        Auth::user()->following()->detach($followedUser->id);
-
+        (new UnfollowUserAction)->execute(Auth::user(), $followedUser->id);
+        
         return ApiResponse::send(200, 'User unfollowed successfully . ', ['is_followed' => false]);
     }
 }
