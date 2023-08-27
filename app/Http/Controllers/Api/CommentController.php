@@ -19,12 +19,7 @@ class CommentController extends Controller
      */
     public function index($postId)
     {
-
-        $post = Post::with('comments')->find($postId);
-        if (! $post) {
-            return ApiResponse::send(404, 'Post not found', []);
-        }
-
+        $post = Post::with('comments')->findOrFail($postId);
         $comments = Comment::where('post_id', $postId)->with('author')->get();
 
         if (count($comments) > 0) {
@@ -63,15 +58,11 @@ class CommentController extends Controller
             'body' => ['required', 'string'],
         ]);
 
-        $comment = Comment::with('author')->find($id);
+        $comment = Comment::with('author')->findOrFail($id);
         if (! Auth()->user()->can('has-comment', $comment)) {
             return ApiResponse::send(403, 'You are not allowed to take this action');
         }
-
-        if (! $comment) {
-            return ApiResponse::send(404, 'Comment not found', null);
-        }
-
+        
         $comment->update($commentNewData);
 
         return ApiResponse::send(200, 'Comment updated successfully .', new CommentResource($comment));

@@ -3,7 +3,11 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
+<<<<<<< HEAD
         'reference' => '34da976431057cae094a650e8e183a85e9e3f55c',
+=======
+        'reference' => '814f7bd2451677067c4c595e366fe45ace9dac64',
+>>>>>>> refs/remotes/origin/main
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -27,6 +31,15 @@
             'install_path' => __DIR__ . '/../barryvdh/reflection-docblock',
             'aliases' => array(),
             'dev_requirement' => false,
+        ),
+        'beyondcode/laravel-er-diagram-generator' => array(
+            'pretty_version' => '2.0.0',
+            'version' => '2.0.0.0',
+            'reference' => '548a1f37ce27137682bf6286f87ad9e74c716659',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../beyondcode/laravel-er-diagram-generator',
+            'aliases' => array(),
+            'dev_requirement' => true,
         ),
         'brick/math' => array(
             'pretty_version' => '0.11.0',
@@ -454,7 +467,11 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
+<<<<<<< HEAD
             'reference' => '34da976431057cae094a650e8e183a85e9e3f55c',
+=======
+            'reference' => '814f7bd2451677067c4c595e366fe45ace9dac64',
+>>>>>>> refs/remotes/origin/main
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -661,6 +678,15 @@
             'reference' => '4f7fd7836c6f332bb2933569e566a0d6c4cbed74',
             'type' => 'library',
             'install_path' => __DIR__ . '/../phar-io/version',
+            'aliases' => array(),
+            'dev_requirement' => true,
+        ),
+        'phpdocumentor/graphviz' => array(
+            'pretty_version' => '1.0.4',
+            'version' => '1.0.4.0',
+            'reference' => 'a906a90a9f230535f25ea31caf81b2323956283f',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../phpdocumentor/graphviz',
             'aliases' => array(),
             'dev_requirement' => true,
         ),

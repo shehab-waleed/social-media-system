@@ -2,18 +2,21 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Helpers\ApiResponse;
-use App\Http\Controllers\Controller;
-use App\Http\Resources\LikeResource;
+use App\Actions\LikeActions\Comment\LikeCommentAction;
+use App\Actions\LikeActions\Comment\UnlikeCommentAction;
+use App\Models\Post;
 use App\Models\Comment;
 use App\Models\CommentLike;
-use App\Models\Post;
-use App\Models\PostLike;
-use App\Notifications\CommentLoveNotification;
-use App\Notifications\PostLikeNotification;
+use App\Helpers\ApiResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Notification;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\LikeResource;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\CommentLoveNotification;
+use App\Actions\LikeActions\Post\LikePostAction;
+use App\Actions\LikeActions\Post\UnlikePostAction;
 
 class LikeController extends Controller
 {
@@ -36,49 +39,29 @@ class LikeController extends Controller
 
     private function likePost($postId)
     {
+        $post = Post::with('author' , 'likes')->findOrFail($postId);
+        $postLike = $post->likes()->where('parent_id', $post->id);
 
-        $postLike = auth()->user()->postsLikes->where('post_id', $postId)->first();
-        $post = Post::with('author')->findOrFail($postId);
-
-        if ($postLike) {
-            $postLike->delete();
-            $post->likes_num > 0 ? $post->decrement('likes_num') : '';
-
-            return ApiResponse::send(200, 'Post Unliked successfully .', ['is_liked' => false]);
-        } else {
-            $post->increment('likes_num');
-            $like = PostLike::create([
-                'post_id' => $post->id,
-                'user_id' => auth()->user()->id,
-            ]);
-            $like->likedAt = 'Post';
-            Notification::send($post->author, new PostLikeNotification($post->id));
-
+        if ($postLike->count() == 0) {
+            $like = (new LikePostAction)->execute($post, Auth::user());
             return ApiResponse::send(201, 'Post liked successfully .', new LikeResource($like));
+        } else {
+            (new UnlikePostAction)->execute($postLike, $post);
+            return ApiResponse::send(200, 'Post Unliked successfully .', ['is_liked' => false]);
         }
-
     }
 
     private function likeComment($commentId)
     {
-        $commentLike = auth()->user()->commentsLikes->where('comment_id', $commentId)->first();
-        $comment = Comment::with('author')->findOrFail($commentId);
+        $comment = Comment::with('author' , 'likes')->findOrFail($commentId);
+        $commentLike = $comment->likes()->where('parent_id', $comment->id);
 
-        if ($commentLike) {
-            $commentLike->delete();
-            $comment->likes_num > 0 ? $comment->decrement('likes_num') : '';
-
-            return ApiResponse::send(200, 'Comment Unliked successfully .', ['is_liked' => false]);
-        } else {
-            $comment->increment('likes_num');
-            $like = CommentLike::create([
-                'comment_id' => $comment->id,
-                'user_id' => auth()->user()->id,
-            ]);
-            $like->likedAt = 'Comment';
-            Notification::send($comment->author, new CommentLoveNotification($comment->id));
-
+        if ($commentLike->count() == 0) {
+            $like = (new LikeCommentAction)->execute($comment, Auth::user());
             return ApiResponse::send(201, 'Comment liked successfully .', new LikeResource($like));
+        } else {
+            (new UnlikeCommentAction)->execute($commentLike, $comment);
+            return ApiResponse::send(200, 'Comment Unliked successfully .', ['is_liked' => false]);
         }
     }
 }
