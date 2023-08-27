@@ -1,7 +1,6 @@
 <?php
-namespace App\Actions\LikeActions;
+namespace App\Actions\LikeActions\Post;
 use App\Models\Post;
-use App\Models\PostLike;
 
 class UnlikePostAction{
     public function execute($postLike , Post $post){

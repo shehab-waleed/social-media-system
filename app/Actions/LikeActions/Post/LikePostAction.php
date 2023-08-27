@@ -1,5 +1,5 @@
 <?php
-namespace App\Actions\LikeActions;
+namespace App\Actions\LikeActions\Post;
 
 use App\Models\Like;
 use App\Models\Post;
@@ -13,7 +13,7 @@ class LikePostAction
     {
         $post->increment('likes_num');
         $like = Like::create([
-            'parent_type' => "App\Models\Post",
+            'parent_type' => get_class($post),
             'parent_id' => $post->id,
             'user_id' => $user->id
         ]);
