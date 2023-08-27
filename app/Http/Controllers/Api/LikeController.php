@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Actions\LikeActions\LikePostAction;
+use App\Actions\LikeActions\UnlikePostAction;
 use App\Models\Post;
 use App\Models\Comment;
 use App\Models\PostLike;
@@ -38,17 +40,16 @@ class LikeController extends Controller
 
     private function likePost($postId)
     {
-        $likeService = new LikeService;
         $post = Post::with('author')->findOrFail($postId);
+        $postLike = $post->likes()->where('parent_id', $post->id);
 
-        $postLike = $likeService->storePostLike($post, Auth::user());
-
-        if($postLike){
-            return ApiResponse::send(201, 'Post liked successfully .', new LikeResource($postLike));
-        }else{
+        if ($postLike->count() == 0) {
+            $like = (new LikePostAction)->execute($post, Auth::user());
+            return ApiResponse::send(201, 'Post liked successfully .', new LikeResource($like));
+        } else {
+            (new UnlikePostAction)->execute($postLike, $post);
             return ApiResponse::send(200, 'Post Unliked successfully .', ['is_liked' => false]);
         }
-
     }
 
     private function likeComment($commentId)
