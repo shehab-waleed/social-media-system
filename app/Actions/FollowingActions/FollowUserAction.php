@@ -1,5 +1,5 @@
 <?php
-namespace App\Actions\LikeActions\FollowingActions;
+namespace App\Actions\FollowingActions;
 
 use App\Models\User;
 use App\Notifications\FollowingNotification;

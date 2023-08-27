@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Actions\LikeActions\FollowingActions\FollowUserAction;
-use App\Actions\LikeActions\FollowingActions\UnfollowUserAction;
+use App\Actions\FollowingActions\FollowUserAction;
+use App\Actions\FollowingActions\UnfollowUserAction;
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FollowingResource;
