@@ -12,7 +12,7 @@ class OTP extends Model
     protected $fillable = [
         'user_id',
         'code',
-        'expires_at'
+        'expires_at',
     ];
 
     protected $table = 'user_otp';

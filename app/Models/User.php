@@ -126,7 +126,8 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(CommentLike::class);
     }
 
-    public function likes(){
+    public function likes()
+    {
         return $this->hasMany(Like::class);
     }
 
@@ -144,6 +145,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsToMany(User::class, 'followers', 'followed_id', 'follower_id')->withTimestamps();
     }
+
     public function sentFriendRequests()
     {
         return $this->hasMany(UserFriendRequest::class, 'sender_id');
@@ -153,6 +155,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(UserFriendRequest::class, 'receiver_id');
     }
+
     public function friends()
     {
         return $this->belongsToMany(User::class, 'friends', 'user_id', 'friend_id')

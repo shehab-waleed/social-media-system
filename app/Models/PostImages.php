@@ -32,7 +32,7 @@ class PostImages extends Model
 
     public $fillable = [
         'post_id',
-        'image'
+        'image',
     ];
 
     public function post()

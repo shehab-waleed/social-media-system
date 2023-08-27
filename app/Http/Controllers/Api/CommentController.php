@@ -62,7 +62,7 @@ class CommentController extends Controller
         if (! Auth()->user()->can('has-comment', $comment)) {
             return ApiResponse::send(403, 'You are not allowed to take this action');
         }
-        
+
         $comment->update($commentNewData);
 
         return ApiResponse::send(200, 'Comment updated successfully .', new CommentResource($comment));

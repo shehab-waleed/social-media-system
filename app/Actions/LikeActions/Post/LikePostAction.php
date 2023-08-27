@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Actions\LikeActions\Post;
 
 use App\Models\Like;
@@ -15,7 +16,7 @@ class LikePostAction
         $like = Like::create([
             'parent_type' => get_class($post),
             'parent_id' => $post->id,
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
         $like->likedAt = 'Post';
         Notification::send($post->author, new PostLikeNotification($post->id));

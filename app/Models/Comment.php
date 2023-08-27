@@ -12,7 +12,7 @@ class Comment extends Model
     protected $fillable = [
         'body',
         'post_id',
-        'parent_id'
+        'parent_id',
     ];
 
     public function post()
@@ -30,7 +30,8 @@ class Comment extends Model
         return $this->hasMany(CommentLike::class, 'comment_id');
     }
 
-    public function likes(){
-        return $this->morphMany(Like::class , 'parent');
+    public function likes()
+    {
+        return $this->morphMany(Like::class, 'parent');
     }
 }

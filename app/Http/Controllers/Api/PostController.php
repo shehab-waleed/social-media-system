@@ -8,7 +8,6 @@ use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
-use App\Models\PostImages;
 use App\Services\PostService;
 use Illuminate\Http\Request;
 
@@ -89,7 +88,7 @@ class PostController extends Controller
     {
         $post = Post::findOrFail($id);
 
-        if (!Auth()->user()->can('has-post', $post)) {
+        if (! Auth()->user()->can('has-post', $post)) {
             return ApiResponse::send(403, 'You are not allowed to take this action', null);
         }
 
@@ -109,9 +108,10 @@ class PostController extends Controller
     {
         $post = Post::with('images')->findOrFail($id);
 
-        if ($postService->destroy($post))
+        if ($postService->destroy($post)) {
             return ApiResponse::send(200, 'Post deleted successfully . ', []);
-        else
+        } else {
             return ApiResponse::send(500, 'Something went wrong. ');
+        }
     }
 }

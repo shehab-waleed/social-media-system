@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
@@ -9,6 +10,7 @@ class FriendRequestSent extends Notification
     use Queueable;
 
     protected $friendRequest;
+
     protected $status;
 
     public function __construct($friendRequest, $status)

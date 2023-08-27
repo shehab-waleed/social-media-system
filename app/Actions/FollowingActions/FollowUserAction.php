@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Actions\FollowingActions;
 
 use App\Models\User;
@@ -9,7 +10,7 @@ class FollowUserAction
 {
     public function execute(User $user, User $followedUser)
     {
-        if (!$user->following()->pluck('followed_id')->contains($followedUser->id)) {
+        if (! $user->following()->pluck('followed_id')->contains($followedUser->id)) {
             $user->following()->attach($followedUser->id);
             Notification::send($followedUser, new FollowingNotification($user));
         }

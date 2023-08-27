@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Post;
-use App\Models\Comment;
-use App\Helpers\ApiResponse;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Http\Resources\LikeResource;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
-use App\Actions\LikeActions\Post\LikePostAction;
-use App\Actions\LikeActions\Post\UnlikePostAction;
 use App\Actions\LikeActions\CommentActions\LikeCommentAction;
 use App\Actions\LikeActions\CommentActions\UnlikeCommentAction;
+use App\Actions\LikeActions\Post\LikePostAction;
+use App\Actions\LikeActions\Post\UnlikePostAction;
+use App\Helpers\ApiResponse;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\LikeResource;
+use App\Models\Comment;
+use App\Models\Post;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 class LikeController extends Controller
 {
@@ -36,28 +36,32 @@ class LikeController extends Controller
 
     private function likePost($postId)
     {
-        $post = Post::with('author' , 'likes')->findOrFail($postId);
+        $post = Post::with('author', 'likes')->findOrFail($postId);
         $postLike = $post->likes()->where('parent_id', $post->id);
 
         if ($postLike->count() == 0) {
             $like = (new LikePostAction)->execute($post, Auth::user());
+
             return ApiResponse::send(201, 'Post liked successfully .', new LikeResource($like));
         } else {
             (new UnlikePostAction)->execute($postLike, $post);
+
             return ApiResponse::send(200, 'Post Unliked successfully .', ['is_liked' => false]);
         }
     }
 
     private function likeComment($commentId)
     {
-        $comment = Comment::with('author' , 'likes')->findOrFail($commentId);
+        $comment = Comment::with('author', 'likes')->findOrFail($commentId);
         $commentLike = $comment->likes()->where('parent_id', $comment->id);
 
         if ($commentLike->count() == 0) {
             $like = (new LikeCommentAction)->execute($comment, Auth::user());
+
             return ApiResponse::send(201, 'Comment liked successfully .', new LikeResource($like));
         } else {
             (new UnlikeCommentAction)->execute($commentLike, $comment);
+
             return ApiResponse::send(200, 'Comment Unliked successfully .', ['is_liked' => false]);
         }
     }

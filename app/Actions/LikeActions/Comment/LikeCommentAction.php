@@ -1,11 +1,12 @@
 <?php
+
 namespace App\Actions\LikeActions\CommentActions;
 
+use App\Models\Comment;
 use App\Models\Like;
 use App\Models\User;
-use App\Models\Comment;
-use Illuminate\Support\Facades\Notification;
 use App\Notifications\CommentLoveNotification;
+use Illuminate\Support\Facades\Notification;
 
 class LikeCommentAction
 {
@@ -15,7 +16,7 @@ class LikeCommentAction
         $like = Like::create([
             'parent_type' => get_class($comment),
             'parent_id' => $comment->id,
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
         $like->likedAt = 'Comment';
         Notification::send($comment->author, new CommentLoveNotification($comment->id));

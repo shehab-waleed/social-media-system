@@ -12,7 +12,7 @@ class Post extends Model
     public $fillable = [
         'title',
         'body',
-        'user_id'
+        'user_id',
     ];
 
     public function scopeFilter($query, array $filters)
@@ -47,7 +47,8 @@ class Post extends Model
         return $this->hasMany(PostLike::class, 'post_id');
     }
 
-    public function likes(){
+    public function likes()
+    {
         return $this->morphMany(Like::class, 'parent');
     }
 }
