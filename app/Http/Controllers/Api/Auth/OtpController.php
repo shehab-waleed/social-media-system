@@ -26,9 +26,6 @@ class OtpController extends Controller
 
     public function generate(Request $request)
     {
-        $data = $request->validate([
-            'user_id' => ['required', 'exists:users,id'],
-        ]);
 
         $otp = OTP::generate(Auth::user()->id);
         Auth::user()->notify(new OtpNotification($otp->code));

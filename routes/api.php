@@ -19,8 +19,8 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [SessionController::class, 'destroy'])->name('logout');
     Route::post('otp/verify', [OtpController::class, 'verify'])->name('otp.verify');
+    Route::post('otp/generate', [OtpController::class, 'generate'])->name('otp.generate');
 });
-Route::post('otp/generate', [OtpController::class, 'generate'])->name('otp.generate');
 
 //--- Posts module ---
 Route::prefix('posts')->middleware('auth:sanctum')->group(function () {
