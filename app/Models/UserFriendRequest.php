@@ -11,7 +11,7 @@ class UserFriendRequest extends Model
 
     protected $fillable = ['user_id', 'friend_id', 'status'];
 
-    protected $table = 'friend_requests';
+    protected $table = 'user_friend_requests';
 
     public function sender()
     {

@@ -6,10 +6,8 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'App\\Actions\\LikeActions\\CommentActions\\LikeCommentAction' => $baseDir . '/app/Actions/LikeActions/CommentActions/LikeCommentAction.php',
-    'App\\Actions\\LikeActions\\CommentActions\\UnlikeCommentAction' => $baseDir . '/app/Actions/LikeActions/CommentActions/UnlikeCommentAction.php',
-    'App\\Actions\\LikeActions\\FollowingActions\\FollowUserAction' => $baseDir . '/app/Actions/LikeActions/FollowingActions/FollowUserAction.php',
-    'App\\Actions\\LikeActions\\FollowingActions\\UnfollowUserAction' => $baseDir . '/app/Actions/LikeActions/FollowingActions/UnfollowUserAction.php',
+    'App\\Actions\\FollowingActions\\FollowUserAction' => $baseDir . '/app/Actions/FollowingActions/FollowUserAction.php',
+    'App\\Actions\\FollowingActions\\UnfollowUserAction' => $baseDir . '/app/Actions/FollowingActions/UnfollowUserAction.php',
     'App\\Actions\\LikeActions\\Post\\LikePostAction' => $baseDir . '/app/Actions/LikeActions/Post/LikePostAction.php',
     'App\\Actions\\LikeActions\\Post\\UnlikePostAction' => $baseDir . '/app/Actions/LikeActions/Post/UnlikePostAction.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',

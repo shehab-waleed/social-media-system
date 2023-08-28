@@ -609,10 +609,8 @@ class ComposerStaticInit4687b97a5c7b96365be7efeee3b7d031
     );
 
     public static $classMap = array (
-        'App\\Actions\\LikeActions\\CommentActions\\LikeCommentAction' => __DIR__ . '/../..' . '/app/Actions/LikeActions/CommentActions/LikeCommentAction.php',
-        'App\\Actions\\LikeActions\\CommentActions\\UnlikeCommentAction' => __DIR__ . '/../..' . '/app/Actions/LikeActions/CommentActions/UnlikeCommentAction.php',
-        'App\\Actions\\LikeActions\\FollowingActions\\FollowUserAction' => __DIR__ . '/../..' . '/app/Actions/LikeActions/FollowingActions/FollowUserAction.php',
-        'App\\Actions\\LikeActions\\FollowingActions\\UnfollowUserAction' => __DIR__ . '/../..' . '/app/Actions/LikeActions/FollowingActions/UnfollowUserAction.php',
+        'App\\Actions\\FollowingActions\\FollowUserAction' => __DIR__ . '/../..' . '/app/Actions/FollowingActions/FollowUserAction.php',
+        'App\\Actions\\FollowingActions\\UnfollowUserAction' => __DIR__ . '/../..' . '/app/Actions/FollowingActions/UnfollowUserAction.php',
         'App\\Actions\\LikeActions\\Post\\LikePostAction' => __DIR__ . '/../..' . '/app/Actions/LikeActions/Post/LikePostAction.php',
         'App\\Actions\\LikeActions\\Post\\UnlikePostAction' => __DIR__ . '/../..' . '/app/Actions/LikeActions/Post/UnlikePostAction.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',

@@ -5,7 +5,7 @@ use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\Api\Auth\SessionController;
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\FollowingController;
-use App\Http\Controllers\api\FriendController;
+use App\Http\Controllers\Api\FriendRequestController;
 use App\Http\Controllers\Api\LikeController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\PostController;
@@ -55,8 +55,8 @@ Route::controller(FollowingController::class)->middleware('auth:sanctum')->group
 });
 
 //--- Friend module ---
-Route::prefix('friend')->controller(FriendController::class)->middleware('auth:sanctum')->group(function () {
-    Route::post('send-request', 'sendRequest');
-    Route::post('/accept-request/{request}', 'acceptRequest');
-    Route::post('/reject-request/{request}', 'rejectRequest');
+Route::prefix('friend')->controller(FriendRequestController::class)->middleware('auth:sanctum')->group(function () {
+    Route::post('send-request', 'send');
+    Route::post('/accept-request', 'accept');
+    Route::post('/reject-request', 'reject');
 });
