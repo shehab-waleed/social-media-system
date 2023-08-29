@@ -13,11 +13,11 @@ class OtpController extends Controller
 {
     public function verify(Request $request)
     {
-        $data = $request->validate([
-            'otp' => ['required', 'min:1', 'max:5'],
-        ]);
+    $data = $request->validate([
+      'otp' => ['required', 'digits:4'],
+    ]);
 
-        if (! OTP::verify($data['otp'])) {
+    if (! OTP::verify($data['otp'])) {
             return ApiResponse::send(422, 'There is an error in OTP code', ['is_verified' => false]);
         }
 
