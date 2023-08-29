@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\FriendRequestController;
 use App\Http\Controllers\Api\LikeController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\PostController;
+use App\Http\Controllers\Api\SharePostController;
 use Illuminate\Support\Facades\Route;
 
 //--- Auth module ---
@@ -25,6 +26,7 @@ Route::middleware('auth:sanctum')->group(function () {
 //--- Posts module ---
 Route::prefix('posts')->middleware('auth:sanctum')->group(function () {
     Route::get('latest', [PostController::class, 'latest']);
+    Route::post('{postId}/share', SharePostController::class);
 });
 Route::apiResource('posts', PostController::class)->middleware(['auth:sanctum', 'verified']);
 

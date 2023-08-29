@@ -28,9 +28,9 @@ class FollowingController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(User $followedUser)
+    public function store(User $followedUser , FollowUserAction $followUserAction)
     {
-        (new FollowUserAction)->execute(Auth::user(), $followedUser);
+        $followUserAction->execute(Auth::user(), $followedUser);
 
         return ApiResponse::send(201, 'User followed successfully . ', ['is_followed' => true]);
     }
@@ -38,9 +38,9 @@ class FollowingController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $followedUser)
+    public function destroy(User $followedUser, UnfollowUserAction $unfollowUserAction)
     {
-        (new UnfollowUserAction)->execute(Auth::user(), $followedUser->id);
+        $unfollowUserAction->execute(Auth::user(), $followedUser->id);
 
         return ApiResponse::send(200, 'User unfollowed successfully . ', ['is_followed' => false]);
     }

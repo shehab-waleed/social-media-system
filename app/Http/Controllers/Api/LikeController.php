@@ -34,33 +34,33 @@ class LikeController extends Controller
 
     }
 
-    private function likePost($postId)
+    private function likePost($postId, LikePostAction $likePostAction, UnlikePostAction $unlikePostAction)
     {
         $post = Post::with('author', 'likes')->findOrFail($postId);
         $postLike = $post->likes()->where('parent_id', $post->id);
 
         if ($postLike->count() == 0) {
-            $like = (new LikePostAction)->execute($post, Auth::user());
+            $like = $likePostAction->execute($post, Auth::user());
 
             return ApiResponse::send(201, 'Post liked successfully .', new LikeResource($like));
         } else {
-            (new UnlikePostAction)->execute($postLike, $post);
+            $unlikePostAction->execute($postLike, $post);
 
             return ApiResponse::send(200, 'Post Unliked successfully .', ['is_liked' => false]);
         }
     }
 
-    private function likeComment($commentId)
+    private function likeComment($commentId, LikeCommentAction $likeCommentAction, UnlikeCommentAction $unlikeCommentAction)
     {
         $comment = Comment::with('author', 'likes')->findOrFail($commentId);
         $commentLike = $comment->likes()->where('parent_id', $comment->id);
 
         if ($commentLike->count() == 0) {
-            $like = (new LikeCommentAction)->execute($comment, Auth::user());
+            $like = $likeCommentAction->execute($comment, Auth::user());
 
             return ApiResponse::send(201, 'Comment liked successfully .', new LikeResource($like));
         } else {
-            (new UnlikeCommentAction)->execute($commentLike, $comment);
+            $unlikeCommentAction->execute($commentLike, $comment);
 
             return ApiResponse::send(200, 'Comment Unliked successfully .', ['is_liked' => false]);
         }
