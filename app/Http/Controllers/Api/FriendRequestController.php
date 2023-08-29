@@ -13,42 +13,50 @@ use Illuminate\Support\Facades\Auth;
 
 class FriendRequestController extends Controller
 {
-    public function send (Request $request)
+    //! Refactor this Contorller
+    public function send(Request $request)
     {
         $request->validate([
-            'friend_id' => ['required', "exists:users,id"],
+            'friend_id' => ['required'],
         ]);
         $friend = User::findOrFail($request->friend_id);
-        $friendRequest  =  UserFriendRequest::create([
-            'friend_id' =>$friend->id,
-            'user_id'=>Auth::user()->id,
+
+        //! Check if the user sent request to the same user or not
+
+        $friendRequest = UserFriendRequest::create([
+            'friend_id' => $friend->id,
+            'user_id' => Auth::user()->id,
             'status' => 'pending',
         ]);
-        $friend->notify(new FriendRequestSent($friendRequest,'pending'));
-        return ApiResponse::send('200','Friend request sent' ,NULL);
+        $friend->notify(new FriendRequestSent($friendRequest, 'pending'));
+        return ApiResponse::send('200', 'Friend request sent', ['Friend Request Id' => $friendRequest->id]);
     }
+
     public function accept(Request $request)
     {
-        $request ->validate([
-            'friend_id'=> ['required','exists:user_friend_requests,id']
+        $request->validate([
+            'request_id' => ['required', 'exists:user_friend_requests,id']
         ]);
-        $friendRequest = UserFriendRequest::findOrFail($request->friend_id);
+
+        $friendRequest = UserFriendRequest::findOrFail($request->request_id);
         Auth::user()->friends()->attach([
-            'friend_id'=>$friendRequest->friend_id
+            'friend_id' => $friendRequest->friend_id
         ]);
+        $friend = User::find($friendRequest->friend_id);
         $friendRequest->delete();
-        $user =auth()->user();
-        $user->notify(new FriendRequestAccepted($friendRequest));
-        return ApiResponse::send('200','Friend Request Accepted Successfully',[]);
+
+        $friend->notify(new FriendRequestAccepted($friendRequest));
+        return ApiResponse::send('200', 'Friend Request Accepted Successfully', []);
     }
+
     public function reject(Request $request)
     {
-        $request ->validate([
-            'friend_id'=> ['required','exists:user_friend_requests,id']
+        $request->validate([
+            'friend_id' => ['required', 'exists:user_friend_requests,id']
         ]);
         $friendRequest = UserFriendRequest::findOrFail($request->friend_id);
         $friendRequest->delete();
-        return ApiResponse::send('200','Friend Request rejected successfully',[]);
+        return ApiResponse::send('200', 'Friend Request rejected successfully', []);
     }
 
 }

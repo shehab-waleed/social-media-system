@@ -23,7 +23,7 @@ class PostResource extends JsonResource
             'Author' => $this->author->first_name . ' ' . $this->author->last_name,
         ];
         if ($this->shared_from) {
-            $data['Shared From'] = User::where('id',$this->shared_from)->pluck('first_name')->first();
+            $data['Shared From'] = User::where('id',$this->shared_from_user_id)->pluck('first_name')->first();
         }
         if ($this->comments->count() > 0) {
             $data['Comments'] = CommentResource::collection($this->comments);

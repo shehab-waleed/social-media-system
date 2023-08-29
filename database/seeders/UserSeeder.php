@@ -23,7 +23,7 @@ class UserSeeder extends Seeder
                 'country' => fake()->country(),
                 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.',
                 // password
-                'is_admin' => rand(0, 3),
+                'is_admin' => rand(0, 1),
             ];
         }
 

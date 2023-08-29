@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('shared_from')->nullable()->constrained('users');
+            $table->foreignId('shared_from_user_id')->nullable()->constrained('users');
+            $table->unsignedInteger('num_of_shares')->default(0);
             $table->text('title');
             $table->text('body');
-            $table->integer('likes_num')->default(0);
+            $table->unsignedInteger('likes_num')->default(0);
             $table->foreignId('user_id');
             $table->timestamps();
         });

@@ -30,7 +30,7 @@ class FriendRequestSent extends Notification
         $message = "You have received a friend request from {$senderName}.";
 
         return [
-            'friend_request_id' => $this->friendRequest->id,
+            'friend_id' => $this->friendRequest->friend_id,
             'message' => $message,
             'status' => $this->status,
         ];
