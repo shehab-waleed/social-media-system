@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('shared_from')->default(null)->constrained('users');
             $table->text('title');
             $table->text('body');
             $table->integer('likes_num')->default(0);

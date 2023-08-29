@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Post;
 use App\Helpers\ApiResponse;
+use Illuminate\Http\Request;
+use App\Services\PostService;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PostResource;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
-use App\Http\Resources\PostResource;
-use App\Models\Post;
-use App\Services\PostService;
-use Illuminate\Http\Request;
+use App\Actions\PostActions\CreatePostAction;
 
 class PostController extends Controller
 {
@@ -59,10 +61,9 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePostRequest $request, PostService $postService)
+    public function store(StorePostRequest $request)
     {
-        $postData = $request->validated();
-        $post = $postService->store($request->user()->id, $postData['title'], $postData['body'], $request->images);
+        $post = (new CreatePostAction)->execute(Auth::user()->id , $request->validated());
 
         if ($post) {
             return ApiResponse::send(201, 'Post created successfully .', new PostResource($post));
