@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -19,8 +20,11 @@ class PostResource extends JsonResource
             'title' => $this->title,
             'Content' => $this->body,
             'User Id' => $this->user_id,
-            'Author' => $this->author->first_name.' '.$this->author->last_name,
+            'Author' => $this->author->first_name . ' ' . $this->author->last_name,
         ];
+        if ($this->shared_from) {
+            $data['Shared From'] = User::where('id',$this->shared_from)->pluck('first_name')->first();
+        }
         if ($this->comments->count() > 0) {
             $data['Comments'] = CommentResource::collection($this->comments);
         }

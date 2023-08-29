@@ -4,10 +4,17 @@ namespace App\Actions\PostActions;
 
 use App\Models\Post;
 
-class DeletePostAction
+class SharePostAction
 {
-    public function execute($userId, Post $post)
+    public function execute(int $userId, Post $post)
     {
-        return 1;
+        $newPost = $post->replicate();
+        $newPost->user_id = $userId;
+        $newPost->updated_at = now();
+        $newPost->created_at = now();
+        $newPost->shared_from = $post->author->id;
+        $newPost->save();
+
+        return $newPost;
     }
 }
