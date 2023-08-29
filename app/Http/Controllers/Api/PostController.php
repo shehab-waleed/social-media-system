@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Actions\PostActions\CreatePostAction;
+use App\Actions\PostActions\DeletePostAction;
 
 class PostController extends Controller
 {
@@ -63,7 +64,7 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        $post = (new CreatePostAction)->execute(Auth::user()->id , $request->validated());
+        $post = (new CreatePostAction)->execute(Auth::user()->id, $request->validated());
 
         if ($post) {
             return ApiResponse::send(201, 'Post created successfully .', new PostResource($post));
@@ -89,7 +90,7 @@ class PostController extends Controller
     {
         $post = Post::findOrFail($id);
 
-        if (! Auth()->user()->can('has-post', $post)) {
+        if (!Auth()->user()->can('has-post', $post)) {
             return ApiResponse::send(403, 'You are not allowed to take this action', null);
         }
 
@@ -105,11 +106,15 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request, $id, PostService $postService)
+    public function destroy(Request $request, $id)
     {
         $post = Post::with('images')->findOrFail($id);
 
-        if ($postService->destroy($post)) {
+        if (!Auth()->user()->can('has-post', $post)) {
+            abort(403, 'Your are not allowed to take this action');
+        }
+
+        if ((new DeletePostAction)->execute($post->id)) {
             return ApiResponse::send(200, 'Post deleted successfully . ', []);
         } else {
             return ApiResponse::send(500, 'Something went wrong. ');
