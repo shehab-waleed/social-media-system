@@ -22,7 +22,8 @@ class FriendRequestController extends Controller
         $request->validate([
             'friend_id' => ['required'],
         ]);
-        $result = $SendFriendRequest->execute($request->friend_id);
+        $friend = User::findOrFail($request->friend_id);
+        $result = $SendFriendRequest->execute($friend);
         return ($result['status'] === 'success')
             ?  ApiResponse::send('200', $result['message'], ['Friend Request Id' => $result['data']])
             :  ApiResponse::send('200', $result['message']);
@@ -32,8 +33,9 @@ class FriendRequestController extends Controller
         $request->validate([
             'request_id' => ['required', 'exists:user_friend_requests,id']
         ]);
+        $friendRequest = UserFriendRequest::findOrFail($request->request_id);
 
-        $result = $AcceptFriendRequest->execute($request->request_id);
+        $result = $AcceptFriendRequest->execute($friendRequest);
 
         return ($result['status'] === 'success')
             ? ApiResponse::send('201', $result['message'], null)
@@ -44,7 +46,8 @@ class FriendRequestController extends Controller
         $request->validate([
             'friend_id' => ['required', 'exists:user_friend_requests,id']
         ]);
-        $result = $RejectFriendRequest->execute($request->friend_id);
+        $friendRequest = UserFriendRequest::findOrFail($request->friend_id);
+        $result = $RejectFriendRequest->execute($friendRequest);
         return ($result['status'] === 'success')
             ? ApiResponse::send('200', $result['message'], null)
             : ApiResponse::send('200', $result['message']);

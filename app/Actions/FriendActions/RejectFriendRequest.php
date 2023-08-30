@@ -9,14 +9,13 @@ use Illuminate\Support\Facades\Auth;
 
 class RejectFriendRequest
 {
-    public function execute($friendId)
+    public function execute( UserFriendRequest $friendId)
     {
-        $friendRequest = UserFriendRequest::findOrFail($friendId);
-        if (Auth::user()->id !== $friendRequest->friend_id) {
+        if (Auth::user()->id !== $friendId->friend_id) {
             return ['status' => 'error', 'message' => 'You can only accept friend requests sent to you'];
         }
-        $friend = User::findorFail($friendRequest->friend_id);
-        $friendRequest->delete();
+        $friend = User::findorFail($friendId->friend_id);
+        $friendId->delete();
         return ['status' => 'success', 'message' => 'Friend Request rejected successfully'];
     }
 
