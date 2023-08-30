@@ -69,7 +69,7 @@ class PostController extends Controller
         if ($post) {
             return ApiResponse::send(201, 'Post created successfully .', new PostResource($post));
         } else {
-            return ApiResponse::send(500, 'Somthing went wrong', []);
+            return ApiResponse::send(500, 'Something went wrong', []);
         }
     }
 
