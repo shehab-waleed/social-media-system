@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Notifications\OtpNotification;
 use Auth;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class OtpController extends Controller
 {
@@ -18,10 +19,10 @@ class OtpController extends Controller
     ]);
 
     if (! OTP::verify($data['otp'])) {
-            return ApiResponse::send(422, 'There is an error in OTP code', ['is_verified' => false]);
+            return ApiResponse::send(JsonResponse::HTTP_UNPROCESSABLE_ENTITY, 'There is an error in OTP code', ['is_verified' => false]);
         }
 
-        return ApiResponse::send(200, 'Account verified successfully', ['is_verified' => true]);
+        return ApiResponse::send(JsonResponse::HTTP_OK, 'Account verified successfully', ['is_verified' => true]);
     }
 
     public function generate(Request $request)
@@ -30,7 +31,7 @@ class OtpController extends Controller
         $otp = OTP::generate(Auth::user()->id);
         Auth::user()->notify(new OtpNotification($otp->code));
 
-        return ApiResponse::send(201, 'OTP generated successfully .');
+        return ApiResponse::send(JsonResponse::HTTP_CREATED, 'OTP generated successfully .');
 
     }
 }

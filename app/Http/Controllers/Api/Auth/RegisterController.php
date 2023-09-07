@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
-use App\Helpers\ApiResponse;
 use App\Helpers\OTP;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreRegisterRequest;
-use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Helpers\ApiResponse;
+use Illuminate\Http\JsonResponse;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use App\Notifications\OtpNotification;
+use App\Http\Requests\StoreRegisterRequest;
 
 class RegisterController extends Controller
 {
@@ -31,6 +32,6 @@ class RegisterController extends Controller
         $user->token = $user->createToken('userToken')->plainTextToken;
         $user->photo = $photoPath ?? null;
 
-        return ApiResponse::send(201, 'User registered successfully .', new UserResource($user));
+        return ApiResponse::send(JsonResponse::HTTP_CREATED, 'User registered successfully .', new UserResource($user));
     }
 }

@@ -13,6 +13,7 @@ use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Actions\PostActions\CreatePostAction;
 use App\Actions\PostActions\DeletePostAction;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class PostController extends Controller
 {
@@ -42,10 +43,10 @@ class PostController extends Controller
                 $data = PostResource::collection($posts);
             }
 
-            return ApiResponse::send(200, 'Posts retrieved successfully .', $data);
+            return ApiResponse::send(JsonResponse::HTTP_OK, 'Posts retrieved successfully .', $data);
 
         } else {
-            return ApiResponse::send(404, 'No posts found', []);
+            return ApiResponse::send(JsonResponse::HTTP_NOT_FOUND, 'No posts found', []);
         }
     }
 
@@ -53,10 +54,10 @@ class PostController extends Controller
     {
         $posts = Post::filter(request(['user_id']))->take(5)->get();
         if (count($posts) > 0) {
-            return ApiResponse::send(200, 'Posts retireved successfully . ', PostResource::collection($posts));
+            return ApiResponse::send(JsonResponse::HTTP_OK, 'Posts retireved successfully . ', PostResource::collection($posts));
         }
 
-        return ApiResponse::send(404, 'No posts found', []);
+        return ApiResponse::send(JsonResponse::HTTP_NOT_FOUND, 'No posts found', []);
     }
 
     /**
@@ -67,9 +68,9 @@ class PostController extends Controller
         $post = $createPostAction->execute(Auth::user()->id, $request->validated());
 
         if ($post) {
-            return ApiResponse::send(201, 'Post created successfully .', new PostResource($post));
+            return ApiResponse::send(JsonResponse::HTTP_CREATED, 'Post created successfully .', new PostResource($post));
         } else {
-            return ApiResponse::send(500, 'Something went wrong', []);
+            return ApiResponse::send(JsonResponse::HTTP_INTERNAL_SERVER_ERROR, 'Something went wrong', []);
         }
     }
 
@@ -80,7 +81,7 @@ class PostController extends Controller
     {
         $post = Post::with('author', 'comments', 'images')->findOrFail($id);
 
-        return ApiResponse::send(200, 'Post retireved successfully . ', new PostResource($post));
+        return ApiResponse::send(JsonResponse::HTTP_OK, 'Post retireved successfully . ', new PostResource($post));
     }
 
     /**
@@ -91,15 +92,15 @@ class PostController extends Controller
         $post = Post::findOrFail($id);
 
         if (!Auth()->user()->can('has-post', $post)) {
-            return ApiResponse::send(403, 'You are not allowed to take this action', null);
+            return ApiResponse::send(JsonResponse::HTTP_FORBIDDEN, 'You are not allowed to take this action', null);
         }
 
         $updatedPost = $post->update($request->validated());
 
         if ($updatedPost) {
-            return ApiResponse::send(200, 'Post updated successfully .', new PostResource($post));
+            return ApiResponse::send(JsonResponse::HTTP_OK, 'Post updated successfully .', new PostResource($post));
         } else {
-            return ApiResponse::send(500, 'Something went wrong . ', null);
+            return ApiResponse::send(JsonResponse::HTTP_INTERNAL_SERVER_ERROR, 'Something went wrong . ', null);
         }
     }
 
@@ -115,9 +116,9 @@ class PostController extends Controller
         }
 
         if ($deletePostAction->execute($post)) {
-            return ApiResponse::send(200, 'Post deleted successfully . ', []);
+            return ApiResponse::send(JsonResponse::HTTP_OK, 'Post deleted successfully . ', []);
         } else {
-            return ApiResponse::send(500, 'Something went wrong. ');
+            return ApiResponse::send(JsonResponse::HTTP_INTERNAL_SERVER_ERROR, 'Something went wrong. ');
         }
     }
 }

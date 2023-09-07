@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Helpers;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ApiResponse
 {
@@ -12,6 +13,9 @@ class ApiResponse
             'data' => $data,
         ];
 
-        return response()->json($response, $code);
+        return new JsonResponse(
+            data: $response,
+            status: $code,
+        );
     }
 }

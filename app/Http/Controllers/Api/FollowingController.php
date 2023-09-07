@@ -8,6 +8,7 @@ use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FollowingResource;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -19,9 +20,9 @@ class FollowingController extends Controller
     public function index()
     {
         if (Route::currentRouteName() == 'followed.index') {
-            return ApiResponse::send(200, 'Followed users retrieved successfully .', Auth::user()->followed);
+            return ApiResponse::send(JsonResponse::HTTP_OK, 'Followed users retrieved successfully .', Auth::user()->followed);
         } elseif (Route::currentRouteName() == 'followers.index') {
-            return ApiResponse::send(200, 'Followers retrieved successfully .', FollowingResource::collection(Auth::user()->following));
+            return ApiResponse::send(JsonResponse::HTTP_OK, 'Followers retrieved successfully .', FollowingResource::collection(Auth::user()->following));
         }
     }
 
@@ -32,7 +33,7 @@ class FollowingController extends Controller
     {
         $followUserAction->execute(Auth::user(), $followedUser);
 
-        return ApiResponse::send(201, 'User followed successfully . ', ['is_followed' => true]);
+        return ApiResponse::send(JsonResponse::HTTP_CREATED, 'User followed successfully . ', ['is_followed' => true]);
     }
 
     /**
@@ -42,6 +43,6 @@ class FollowingController extends Controller
     {
         $unfollowUserAction->execute(Auth::user(), $followedUser->id);
 
-        return ApiResponse::send(200, 'User unfollowed successfully . ', ['is_followed' => false]);
+        return ApiResponse::send(JsonResponse::HTTP_OK, 'User unfollowed successfully . ', ['is_followed' => false]);
     }
 }

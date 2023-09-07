@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class NotificationController extends Controller
 {
@@ -16,9 +17,9 @@ class NotificationController extends Controller
         $notifications = auth()->user()->notifications;
 
         if ($notifications->count() == 0) {
-            return ApiResponse::send(204, 'User does not have any notifications');
+            return ApiResponse::send(JsonResponse::HTTP_NOT_FOUND, 'User does not have any notifications');
         } else {
-            return ApiResponse::send(200, 'Notificaitons retireved successfully. ', $notifications);
+            return ApiResponse::send(JsonResponse::HTTP_OK, 'Notificaitons retireved successfully. ', $notifications);
         }
     }
 
@@ -27,22 +28,22 @@ class NotificationController extends Controller
         $notificaion = Auth::user()->notifications->where('id', 3);
 
         if (!$notificaion) {
-            return ApiResponse::send(404, 'Notificaion not found.');
+            return ApiResponse::send(JsonResponse::HTTP_NOT_FOUND, 'Notificaion not found.');
         }
 
         $notificaion->markAsRead();
-        return ApiResponse::send(200, 'Notificaion marked as read sucessfully.');
+        return ApiResponse::send(JsonResponse::HTTP_OK, 'Notificaion marked as read sucessfully.');
     }
 
     public function readAll()
     {
         if (auth()->user()->unreadNotifications()->count() == 0) {
-            return ApiResponse::send(204, 'User does not has any unread notifications .');
+            return ApiResponse::send(JsonResponse::HTTP_NOT_FOUND, 'User does not has any unread notifications .');
         } else {
             foreach (auth()->user()->notifications as $notification) {
                 $notification->markAsRead();
             }
-            return ApiResponse::send(200, 'Notifications marked as readed successfully .', [  ]);
+            return ApiResponse::send(JsonResponse::HTTP_OK, 'Notifications marked as readed successfully .', [  ]);
         }
     }
 }

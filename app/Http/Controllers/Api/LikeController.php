@@ -14,6 +14,7 @@ use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class LikeController extends Controller
 {
@@ -42,11 +43,11 @@ class LikeController extends Controller
         if ($postLike->count() == 0) {
             $like = $likePostAction->execute($post, Auth::user());
 
-            return ApiResponse::send(201, 'Post liked successfully .', new LikeResource($like));
+            return ApiResponse::send(JsonResponse::HTTP_CREATED, 'Post liked successfully .', new LikeResource($like));
         } else {
             $unlikePostAction->execute($postLike, $post);
 
-            return ApiResponse::send(200, 'Post Unliked successfully .', ['is_liked' => false]);
+            return ApiResponse::send(JsonResponse::HTTP_OK, 'Post Unliked successfully .', ['is_liked' => false]);
         }
     }
 
@@ -58,11 +59,11 @@ class LikeController extends Controller
         if ($commentLike->count() == 0) {
             $like = $likeCommentAction->execute($comment, Auth::user());
 
-            return ApiResponse::send(201, 'Comment liked successfully .', new LikeResource($like));
+            return ApiResponse::send(JsonResponse::HTTP_CREATED, 'Comment liked successfully .', new LikeResource($like));
         } else {
             $unlikeCommentAction->execute($commentLike, $comment);
 
-            return ApiResponse::send(200, 'Comment Unliked successfully .', ['is_liked' => false]);
+            return ApiResponse::send(JsonResponse::HTTP_OK, 'Comment Unliked successfully .', ['is_liked' => false]);
         }
     }
 }

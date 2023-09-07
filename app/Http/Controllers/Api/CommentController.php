@@ -11,6 +11,7 @@ use App\Models\Post;
 use App\Notifications\CommentNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class CommentController extends Controller
 {
@@ -23,9 +24,9 @@ class CommentController extends Controller
         $comments = Comment::where('post_id', $postId)->with('author')->get();
 
         if (count($comments) > 0) {
-            return ApiResponse::send(200, 'Comments retireved successfully .', CommentResource::collection($comments));
+            return ApiResponse::send(JsonResponse::HTTP_OK, 'Comments retireved successfully .', CommentResource::collection($comments));
         } else {
-            return ApiResponse::send(204, 'Post does not contains any comments', []);
+            return ApiResponse::send(JsonResponse::HTTP_NOT_FOUND, 'Post does not contains any comments', []);
         }
     }
 
@@ -45,7 +46,7 @@ class CommentController extends Controller
         Notification::send($post->author, new CommentNotification($data['post_id']));
 
         if ($comment) {
-            return ApiResponse::send(201, 'Comment Created successfully . ', new CommentResource($comment));
+            return ApiResponse::send(JsonResponse::HTTP_CREATED, 'Comment Created successfully . ', new CommentResource($comment));
         }
     }
 
@@ -60,12 +61,12 @@ class CommentController extends Controller
 
         $comment = Comment::with('author')->findOrFail($id);
         if (! Auth()->user()->can('has-comment', $comment)) {
-            return ApiResponse::send(403, 'You are not allowed to take this action');
+            return ApiResponse::send(JsonResponse::HTTP_FORBIDDEN, 'You are not allowed to take this action');
         }
 
         $comment->update($commentNewData);
 
-        return ApiResponse::send(200, 'Comment updated successfully .', new CommentResource($comment));
+        return ApiResponse::send(JsonResponse::HTTP_OK, 'Comment updated successfully .', new CommentResource($comment));
 
     }
 
@@ -78,11 +79,11 @@ class CommentController extends Controller
         $comment = Comment::findOrFail($id);
 
         if (! Auth()->user()->can('has-comment', $comment)) {
-            return ApiResponse::send(403, 'You are not allow to take this action', []);
+            return ApiResponse::send(JsonResponse::HTTP_FORBIDDEN, 'You are not allow to take this action', []);
         }
 
         $comment->delete();
 
-        return ApiResponse::send(204, 'Comment removed successfully . ');
+        return ApiResponse::send(JsonResponse::HTTP_OK, 'Comment removed successfully . ');
     }
 }

@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Helpers\ApiResponse;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreLoginRequest;
-use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\StoreLoginRequest;
 
 class SessionController extends Controller
 {
@@ -21,9 +22,9 @@ class SessionController extends Controller
             $user = Auth::user();
             $user->token = $user->createToken('userToken')->plainTextToken;
 
-            return ApiResponse::send(200, 'User logged in successfully .', new UserResource($user));
+            return ApiResponse::send(JsonResponse::HTTP_OK, 'User logged in successfully .', new UserResource($user));
         } else {
-            return ApiResponse::send(401, 'User credentials does not works', null);
+            return ApiResponse::send(JsonResponse::HTTP_UNAUTHORIZED, 'User credentials does not works', null);
         }
 
     }
@@ -36,6 +37,6 @@ class SessionController extends Controller
         //
         $request->user()->currentAccessToken()->delete();
 
-        return ApiResponse::send(204, 'Logged out successfully .', []);
+        return ApiResponse::send(JsonResponse::HTTP_NO_CONTENT, 'Logged out successfully .', []);
     }
 }
