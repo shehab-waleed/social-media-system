@@ -26,7 +26,7 @@ class FriendRequestSent extends Notification
 
     public function toArray($notifiable)
     {
-        $senderName = $this->friendRequest->sender->first_name;
+        $senderName = $this->friendRequest->receiver->first_name;
         $message = "You have received a friend request from {$senderName}.";
 
         return [

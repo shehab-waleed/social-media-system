@@ -10,7 +10,7 @@ class FriendRequestAccepted extends Notification
 {
     use Queueable;
     protected $friendRequest;
-    public function __construct(  $friendRequest)
+    public function __construct($friendRequest)
     {
         $this->friendRequest =$friendRequest;
     }
@@ -24,8 +24,8 @@ class FriendRequestAccepted extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            'user who request friend id' => $this->friendRequest->friend_id,
-            'message' => ucwords($this->friendRequest->first_name).' Accept you !',
+            'user who request friend id' => $this->friendRequest->receiver->friend_id,
+            'message' => ucwords($this->friendRequest->receiver->first_name).' Accept you !',
         ];
     }
 }
