@@ -39,6 +39,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 //--- Notifications module ---
 Route::prefix('notifications')->middleware('auth:sanctum')->group(function () {
     Route::get('', [NotificationController::class, 'index']);
+    Route::post('{notificationId}/read', [NotificationController::class, 'read']);
     Route::get('read-all', [NotificationController::class, 'readAll']);
 });
 

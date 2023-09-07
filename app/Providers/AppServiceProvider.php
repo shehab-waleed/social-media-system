@@ -23,9 +23,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
 
-        Gate::define('admin', fn ($user) => auth()->user()->is_admin);
-        Gate::define('has-post', fn ($user, $post) => $user->id == $post->user_id);
-        Gate::define('has-comment', fn ($user, $comment) => $user->id == $comment->user_id);
+        Gate::define('admin', fn($user) => auth()->user()->is_admin);
+        Gate::define('has-post', fn($user, $post) => $user->id == $post->user_id);
+        Gate::define('has-comment', fn($user, $comment) => $user->id == $comment->user_id);
 
         // Observers
         User::observe(UserObserver::class);
