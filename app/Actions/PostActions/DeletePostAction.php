@@ -4,13 +4,16 @@ namespace App\Actions\PostActions;
 
 use App\Models\Post;
 
-class DeletePostAction{
-    public function execute(Post $post){
+class DeletePostAction
+{
+    public function execute(Post $post)
+    {
 
-        if ($post->delete())
+        if ($post->delete()) {
             return true;
-        else
+        } else {
             return false;
+        }
 
     }
 }

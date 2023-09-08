@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Post;
-use App\Helpers\ApiResponse;
-use Illuminate\Http\Request;
-use App\Services\PostService;
-use App\Http\Controllers\Controller;
-use App\Http\Resources\PostResource;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\StorePostRequest;
-use App\Http\Requests\UpdatePostRequest;
 use App\Actions\PostActions\CreatePostAction;
 use App\Actions\PostActions\DeletePostAction;
+use App\Helpers\ApiResponse;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
+use App\Http\Resources\PostResource;
+use App\Models\Post;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class PostController extends Controller
@@ -91,7 +90,7 @@ class PostController extends Controller
     {
         $post = Post::findOrFail($id);
 
-        if (!Auth()->user()->can('has-post', $post)) {
+        if (! Auth()->user()->can('has-post', $post)) {
             return ApiResponse::send(JsonResponse::HTTP_FORBIDDEN, 'You are not allowed to take this action', null);
         }
 
@@ -111,7 +110,7 @@ class PostController extends Controller
     {
         $post = Post::with('images')->findOrFail($id);
 
-        if (!Auth()->user()->can('has-post', $post)) {
+        if (! Auth()->user()->can('has-post', $post)) {
             abort(403, 'Your are not allowed to take this action');
         }
 

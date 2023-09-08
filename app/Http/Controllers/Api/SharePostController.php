@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Post;
+use App\Actions\PostActions\SharePostAction;
 use App\Helpers\ApiResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PostResource;
-use Illuminate\Support\Facades\Auth;
-use App\Actions\PostActions\SharePostAction;
+use App\Models\Post;
 use App\Notifications\SharingPostNotificaion;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SharePostController extends Controller
 {

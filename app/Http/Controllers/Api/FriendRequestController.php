@@ -18,37 +18,40 @@ class FriendRequestController extends Controller
     public function send(Request $request, SendFriendRequest $SendFriendRequest)
     {
         $request->validate([
-            'friend_id' => [ 'required' ],
-         ]);
+            'friend_id' => ['required'],
+        ]);
         $friend = User::findOrFail($request->friend_id);
         $result = $SendFriendRequest->execute($friend);
-        return ('success' === $result[ 'status' ])
-        ? ApiResponse::send(JsonResponse::HTTP_OK, $result[ 'message' ], [ 'Friend Request Id' => $result[ 'data' ] ])
-        : ApiResponse::send(JsonResponse::HTTP_OK, $result[ 'message' ]);
+
+        return ('success' === $result['status'])
+        ? ApiResponse::send(JsonResponse::HTTP_OK, $result['message'], ['Friend Request Id' => $result['data']])
+        : ApiResponse::send(JsonResponse::HTTP_OK, $result['message']);
     }
+
     public function accept(Request $request, AcceptFriendRequest $AcceptFriendRequest)
     {
         $request->validate([
-            'request_id' => [ 'required', 'exists:user_friend_requests,id' ],
-         ]);
+            'request_id' => ['required', 'exists:user_friend_requests,id'],
+        ]);
         $friendRequest = UserFriendRequest::findOrFail($request->request_id);
 
         $result = $AcceptFriendRequest->execute($friendRequest);
 
-        return ('success' === $result[ 'status' ])
-        ? ApiResponse::send(JsonResponse::HTTP_OK, $result[ 'message' ], null)
-        : ApiResponse::send(JsonResponse::HTTP_CREATED, $result[ 'message' ]);
+        return ('success' === $result['status'])
+        ? ApiResponse::send(JsonResponse::HTTP_OK, $result['message'], null)
+        : ApiResponse::send(JsonResponse::HTTP_CREATED, $result['message']);
     }
+
     public function reject(Request $request, RejectFriendRequest $RejectFriendRequest)
     {
         $request->validate([
-            'friend_id' => [ 'required', 'exists:user_friend_requests,id' ],
-         ]);
+            'friend_id' => ['required', 'exists:user_friend_requests,id'],
+        ]);
         $friendRequest = UserFriendRequest::findOrFail($request->friend_id);
         $result = $RejectFriendRequest->execute($friendRequest);
-        return ('success' === $result[ 'status' ])
-        ? ApiResponse::send(JsonResponse::HTTP_OK, $result[ 'message' ], null)
-        : ApiResponse::send(JsonResponse::HTTP_OK, $result[ 'message' ]);
-    }
 
+        return ('success' === $result['status'])
+        ? ApiResponse::send(JsonResponse::HTTP_OK, $result['message'], null)
+        : ApiResponse::send(JsonResponse::HTTP_OK, $result['message']);
+    }
 }

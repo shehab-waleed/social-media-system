@@ -12,6 +12,7 @@ class SharingPostNotificaion extends Notification
     use Queueable;
 
     private Post $post;
+
     private User $userWhoShare;
 
     /**

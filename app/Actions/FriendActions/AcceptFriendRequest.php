@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class AcceptFriendRequest
 {
-    public function execute( UserFriendRequest $friendRequestId): array
+    public function execute(UserFriendRequest $friendRequestId): array
     {
 
         if (Auth::user()->id !== $friendRequestId->friend_id) {
@@ -22,6 +22,7 @@ class AcceptFriendRequest
         $friendRequestId->delete();
 
         $friend->notify(new FriendRequestAccepted($friendRequestId));
+
         return ['status' => 'success', 'message' => 'Friend Request Accepted Successfully'];
     }
 }

@@ -26,7 +26,7 @@ class OTP
     {
         $userOtp = Auth::user()->otp;
 
-        if (!$userOtp || $providedOtp != $userOtp->code || now()->gt($userOtp->expires_at)) {
+        if (! $userOtp || $providedOtp != $userOtp->code || now()->gt($userOtp->expires_at)) {
             return false;
         }
 

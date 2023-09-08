@@ -1,7 +1,9 @@
 <?php
+
 namespace App\Enums;
 
-enum Roles: int {
+enum Roles: int
+{
     case ADMIN = 1;
     case USER = 2;
 }

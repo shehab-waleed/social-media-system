@@ -27,11 +27,12 @@ class NotificationController extends Controller
     {
         $notificaion = Auth::user()->notifications->where('id', 3);
 
-        if (!$notificaion) {
+        if (! $notificaion) {
             return ApiResponse::send(JsonResponse::HTTP_NOT_FOUND, 'Notificaion not found.');
         }
 
         $notificaion->markAsRead();
+
         return ApiResponse::send(JsonResponse::HTTP_OK, 'Notificaion marked as read sucessfully.');
     }
 
@@ -43,7 +44,8 @@ class NotificationController extends Controller
             foreach (auth()->user()->notifications as $notification) {
                 $notification->markAsRead();
             }
-            return ApiResponse::send(JsonResponse::HTTP_OK, 'Notifications marked as readed successfully .', [  ]);
+
+            return ApiResponse::send(JsonResponse::HTTP_OK, 'Notifications marked as readed successfully .', []);
         }
     }
 }

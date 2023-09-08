@@ -2,7 +2,6 @@
 
 namespace App\Actions\FriendActions;
 
-use App\Helpers\ApiResponse;
 use App\Models\User;
 use App\Models\UserFriendRequest;
 use App\Notifications\FriendRequestSent;
@@ -10,11 +9,11 @@ use Illuminate\Support\Facades\Auth;
 
 class SendFriendRequest
 {
-    public function execute(User $friend):array
+    public function execute(User $friend): array
     {
 
-        $user =  Auth::user()->id;
-        if ($friend->id ==$user) {
+        $user = Auth::user()->id;
+        if ($friend->id == $user) {
             return ['status' => 'error', 'message' => 'Cannot send friend request to yourself'];
         }
 
@@ -31,9 +30,8 @@ class SendFriendRequest
             'status' => 'pending',
         ]);
         $friend->notify(new FriendRequestSent($friendRequest, 'pending'));
-        return ['status' => 'success', 'message' => 'Friend request sent','data'=>['Friend Request Id' => $friendRequest->id]];
+
+        return ['status' => 'success', 'message' => 'Friend request sent', 'data' => ['Friend Request Id' => $friendRequest->id]];
 
     }
-
-
 }

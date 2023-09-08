@@ -2,19 +2,19 @@
 
 namespace App\Notifications;
 
-use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 
 class FriendRequestAccepted extends Notification
 {
     use Queueable;
+
     protected $friendRequest;
+
     public function __construct($friendRequest)
     {
-        $this->friendRequest =$friendRequest;
+        $this->friendRequest = $friendRequest;
     }
-
 
     public function via(object $notifiable): array
     {

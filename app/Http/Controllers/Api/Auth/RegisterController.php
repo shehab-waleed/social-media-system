@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
-use App\Helpers\OTP;
-use App\Models\User;
 use App\Helpers\ApiResponse;
-use Illuminate\Http\JsonResponse;
+use App\Helpers\OTP;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\UserResource;
-use App\Notifications\OtpNotification;
 use App\Http\Requests\StoreRegisterRequest;
+use App\Http\Resources\UserResource;
+use App\Models\User;
+use App\Notifications\OtpNotification;
+use Illuminate\Http\JsonResponse;
 
 class RegisterController extends Controller
 {

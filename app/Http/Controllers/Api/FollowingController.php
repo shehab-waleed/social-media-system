@@ -29,7 +29,7 @@ class FollowingController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(User $followedUser , FollowUserAction $followUserAction)
+    public function store(User $followedUser, FollowUserAction $followUserAction)
     {
         $followUserAction->execute(Auth::user(), $followedUser);
 
