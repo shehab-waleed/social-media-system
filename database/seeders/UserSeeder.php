@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\Roles;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -14,6 +15,17 @@ class UserSeeder extends Seeder
     {
         // User::factory(1000)->create();
         $data = [];
+        // Admin Account for testing
+        $data[] = [
+            'first_name' => 'shehab',
+            'last_name' => 'waleed',
+            'username' => 'shehabwaleed',
+            'email' => 'shehab@gmail.com',
+            'country' => 'Egypt',
+            'password' => bcrypt('shehab2010'),
+            'role' => Roles::ADMIN->value,
+        ];
+
         for ($i = 0; $i < 10; $i++) {
             $data[] = [
                 'first_name' => fake()->name(),
@@ -23,7 +35,7 @@ class UserSeeder extends Seeder
                 'country' => fake()->country(),
                 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.',
                 // password
-                'is_admin' => rand(0, 1),
+                'role' => Roles::USER->value,
             ];
         }
 

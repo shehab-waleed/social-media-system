@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Enums\Roles;
 use App\Models\User;
 use App\Observers\UserObserver;
 use Illuminate\Support\Facades\Gate;
@@ -23,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
 
-        Gate::define('admin', fn($user) => auth()->user()->is_admin);
+        Gate::define('admin', fn($user) => auth()->user()->role == Roles::ADMIN);
         Gate::define('has-post', fn($user, $post) => $user->id == $post->user_id);
         Gate::define('has-comment', fn($user, $comment) => $user->id == $comment->user_id);
 
