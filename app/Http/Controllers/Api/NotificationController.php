@@ -25,7 +25,7 @@ class NotificationController extends Controller
 
     public function read(int $notificaionId)
     {
-        $notificaion = Auth::user()->notifications->where('id', 3);
+        $notificaion = Auth::user()->notifications->where('id', $notificaionId);
 
         if (! $notificaion) {
             return ApiResponse::send(JsonResponse::HTTP_NOT_FOUND, 'Notificaion not found.');
