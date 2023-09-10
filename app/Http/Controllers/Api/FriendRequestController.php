@@ -11,16 +11,18 @@ use App\Models\User;
 use App\Models\UserFriendRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FriendRequestController extends Controller
 {
-    //! Refactor this Contorller
+
     public function send(Request $request, SendFriendRequest $SendFriendRequest)
     {
         $request->validate([
             'friend_id' => ['required'],
         ]);
         $friend = User::findOrFail($request->friend_id);
+
         $result = $SendFriendRequest->execute($friend);
 
         return ('success' === $result['status'])
@@ -33,7 +35,7 @@ class FriendRequestController extends Controller
         $request->validate([
             'request_id' => ['required', 'exists:user_friend_requests,id'],
         ]);
-        $friendRequest = UserFriendRequest::findOrFail($request->request_id);
+        $friendRequest = UserFriendRequest::findOrFail(Auth::user(),$request->request_id);
 
         $result = $AcceptFriendRequest->execute($friendRequest);
 
@@ -48,7 +50,7 @@ class FriendRequestController extends Controller
             'friend_id' => ['required', 'exists:user_friend_requests,id'],
         ]);
         $friendRequest = UserFriendRequest::findOrFail($request->friend_id);
-        $result = $RejectFriendRequest->execute($friendRequest);
+        $result = $RejectFriendRequest->execute(Auth::user(),$friendRequest);
 
         return ('success' === $result['status'])
         ? ApiResponse::send(JsonResponse::HTTP_OK, $result['message'], null)

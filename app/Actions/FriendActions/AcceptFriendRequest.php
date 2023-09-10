@@ -9,15 +9,15 @@ use Illuminate\Support\Facades\Auth;
 
 class AcceptFriendRequest
 {
-    public function execute(UserFriendRequest $friendRequestId): array
+    public function execute( User $user ,UserFriendRequest $friendRequestId): array
     {
 
-        if (Auth::user()->id !== $friendRequestId->friend_id) {
+        if ($user->id !== $friendRequestId->friend_id) {
             return ['status' => 'error', 'message' => 'You can only accept friend requests sent to you'];
         }
 
         $friend = User::findOrFail($friendRequestId->user_id);
-        Auth::user()->friends()->attach($friend->id);
+        $user->friends()->attach($friend->id);
 
         $friendRequestId->delete();
 
