@@ -9,10 +9,10 @@ use Illuminate\Support\Facades\Auth;
 
 class SendFriendRequest
 {
-    public function execute(User $friend): array
+    public function execute(User $user,User $friend): array
     {
 
-        $userId = Auth::user()->id;
+        $userId = $user->id;
         if ($friend->id === $userId) {
             return ['status' => 'error', 'message' => 'Cannot send friend request to yourself'];
         }

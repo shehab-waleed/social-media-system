@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\Api\Auth\SessionController;
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\FollowingController;
+use App\Http\Controllers\Api\FriendController;
 use App\Http\Controllers\Api\FriendRequestController;
 use App\Http\Controllers\Api\LikeController;
 use App\Http\Controllers\Api\NotificationController;
@@ -57,9 +58,14 @@ Route::controller(FollowingController::class)->middleware('auth:sanctum')->group
     Route::delete('unfollow/{followedUser}', 'destroy');
 });
 
-//--- Friend module ---
+//--- FriendRequest module ---
 Route::prefix('friend')->controller(FriendRequestController::class)->middleware('auth:sanctum')->group(function () {
     Route::post('send-request', 'send');
     Route::post('/accept-request', 'accept');
     Route::post('/reject-request', 'reject');
+});
+//--- Friend module ---
+Route::prefix('friend')->controller(FriendController::class)->middleware('auth:sanctum')->group(function () {
+    Route::get('show', 'show');
+    Route::delete('{friendId}/delete', 'delete');
 });
