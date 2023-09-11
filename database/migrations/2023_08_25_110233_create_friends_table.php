@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('friend_id')->references('id')->on('users')->cascadeOnDelete();
             $table->timestamps();
         });
-        //userfriends
+
     }
 
     /**

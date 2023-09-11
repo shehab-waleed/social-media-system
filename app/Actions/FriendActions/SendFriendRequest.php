@@ -9,16 +9,16 @@ use Illuminate\Support\Facades\Auth;
 
 class SendFriendRequest
 {
-    public function execute(User $friend): array
+    public function execute(User $user,User $friend): array
     {
 
-        $user = Auth::user()->id;
-        if ($friend->id == $user) {
+        $userId = $user->id;
+        if ($friend->id === $userId) {
             return ['status' => 'error', 'message' => 'Cannot send friend request to yourself'];
         }
 
-        $existingRequest = UserFriendRequest::where('user_id', Auth::user()->id)
-            ->where('friend_id', $friend)
+        $existingRequest = UserFriendRequest::where('user_id', $userId)
+            ->where('friend_id', $friend->id)
             ->first();
 
         if ($existingRequest) {
@@ -26,7 +26,7 @@ class SendFriendRequest
         }
         $friendRequest = UserFriendRequest::create([
             'friend_id' => $friend->id,
-            'user_id' => $user,
+            'user_id' => $userId,
             'status' => 'pending',
         ]);
         $friend->notify(new FriendRequestSent($friendRequest, 'pending'));
