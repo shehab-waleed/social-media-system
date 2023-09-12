@@ -5,11 +5,10 @@ namespace App\Actions\FriendActions;
 use App\Models\User;
 use App\Models\UserFriendRequest;
 use App\Notifications\FriendRequestSent;
-use Illuminate\Support\Facades\Auth;
 
 class SendFriendRequest
 {
-    public function execute(User $user,User $friend): array
+    public function execute(User $user, User $friend): array
     {
 
         $userId = $user->id;

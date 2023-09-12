@@ -5,11 +5,10 @@ namespace App\Actions\FriendActions;
 use App\Models\User;
 use App\Models\UserFriendRequest;
 use App\Notifications\FriendRequestAccepted;
-use Illuminate\Support\Facades\Auth;
 
 class AcceptFriendRequest
 {
-    public function execute( User $user ,UserFriendRequest $friendRequestId): array
+    public function execute(User $user, UserFriendRequest $friendRequestId): array
     {
 
         if ($user->id !== $friendRequestId->friend_id) {

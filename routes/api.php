@@ -59,7 +59,7 @@ Route::controller(FollowingController::class)->middleware('auth:sanctum')->group
 });
 
 //--- FriendRequest module ---
-Route::prefix('friend')->controller(FriendRequestController::class)->middleware(['auth:sanctum','verified'])->group(function () {
+Route::prefix('friend')->controller(FriendRequestController::class)->middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('send-request', 'send');
     Route::post('/accept-request', 'accept');
     Route::post('/reject-request', 'reject');
