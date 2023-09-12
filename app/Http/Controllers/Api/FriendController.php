@@ -14,7 +14,7 @@ class FriendController extends Controller
         $friends = auth()->user()->friends;
 
         if ($friends->isEmpty()) {
-            return ApiResponse::send(JsonResponse::HTTP_OK, 'No friends found', []);
+            return ApiResponse::send(JsonResponse::HTTP_NOT_FOUND, 'No friends found', []);
         }
 
         return ApiResponse::send(JsonResponse::HTTP_OK, 'Friends retrieved successfully', FriendResource::collection($friends));
