@@ -6,14 +6,16 @@ use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FriendResource;
 use App\Models\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class FriendController extends Controller
 {
 
 
-    public function show()
+    public function index()
     {
         $user = Auth::user();
         $friends = $user->friends()
@@ -24,21 +26,32 @@ class FriendController extends Controller
             return ApiResponse::send(JsonResponse::HTTP_OK, 'No friends found', []);
         }
 
-        $formattedFriends = FriendResource::collection($friends);
-
-        return ApiResponse::send(JsonResponse::HTTP_OK, 'Friends retrieved successfully', $formattedFriends);
+        return ApiResponse::send(JsonResponse::HTTP_OK, 'Friends retrieved successfully',  FriendResource::collection($friends));
     }
 
-    public function delete($friendId)
+
+
+    public function destroy($friendId)
     {
-        $friend = User::with('friends')->find($friendId);
+
+        $user = Auth::user();
+
+        $friend = $user->friends()->find($friendId);
+
         if (!$friend) {
+
             return ApiResponse::send(JsonResponse::HTTP_NOT_FOUND, 'Friend not found', []);
         }
-        $friend->delete();
+
+
+        $user->friends()->detach($friend->id);
+
         return ApiResponse::send(JsonResponse::HTTP_OK, 'Friend deleted successfully', []);
     }
 
 
+
 }
+
+
 
