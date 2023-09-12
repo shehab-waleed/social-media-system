@@ -64,6 +64,7 @@ Route::prefix('friend')->controller(FriendRequestController::class)->middleware(
     Route::post('/accept-request', 'accept');
     Route::post('/reject-request', 'reject');
 });
+
 //--- Friend module ---
 Route::prefix('friends')->controller(FriendController::class)->middleware('auth:sanctum')->group(function () {
     Route::get('/', 'index');
