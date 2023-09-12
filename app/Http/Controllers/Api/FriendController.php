@@ -5,11 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FriendResource;
-use App\Models\User;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class FriendController extends Controller
 {
@@ -33,23 +30,15 @@ class FriendController extends Controller
 
     public function destroy($friendId)
     {
-
-        $user = Auth::user();
-
-        $friend = $user->friends()->find($friendId);
+        $friend = auth()->user()->friends()->find($friendId);
 
         if (!$friend) {
-
-            return ApiResponse::send(JsonResponse::HTTP_NOT_FOUND, 'Friend not found', []);
+            return ApiResponse::send(JsonResponse::HTTP_NOT_FOUND, 'Friend not found');
         }
 
-
-        $user->friends()->detach($friend->id);
-
-        return ApiResponse::send(JsonResponse::HTTP_OK, 'Friend deleted successfully', []);
+        auth()->user()->friends()->detach($friend->id);
+        return ApiResponse::send(JsonResponse::HTTP_OK, 'Friend deleted successfully');
     }
-
-
 
 }
 
