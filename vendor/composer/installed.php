@@ -3,11 +3,7 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-<<<<<<< HEAD
-        'reference' => '8d9c42815756a9804581cdf5885112b81708eb03',
-=======
-        'reference' => '14dd68637bed670828c4df15ba912e5fbcb744ac',
->>>>>>> refs/remotes/origin/main
+        'reference' => '4ce0d3eb25f602a5adb8f6f2512ea33f551397b1',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -467,11 +463,7 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-<<<<<<< HEAD
-            'reference' => '8d9c42815756a9804581cdf5885112b81708eb03',
-=======
-            'reference' => '14dd68637bed670828c4df15ba912e5fbcb744ac',
->>>>>>> refs/remotes/origin/main
+            'reference' => '4ce0d3eb25f602a5adb8f6f2512ea33f551397b1',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -510,15 +502,6 @@
             'reference' => 'f23fe9d4e95255dacee1bf3525e0810d1a1b0f37',
             'type' => 'library',
             'install_path' => __DIR__ . '/../laravel/serializable-closure',
-            'aliases' => array(),
-            'dev_requirement' => false,
-        ),
-        'laravel/telescope' => array(
-            'pretty_version' => 'v4.15.2',
-            'version' => '4.15.2.0',
-            'reference' => '5d74ae4c9f269b756d7877ad1527770c59846e14',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../laravel/telescope',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
