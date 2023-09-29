@@ -10,6 +10,8 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Notifications\OtpNotification;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Mail;
+use Notification;
 
 class RegisterController extends Controller
 {
