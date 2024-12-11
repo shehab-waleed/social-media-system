@@ -17,12 +17,10 @@ class PostFactory extends Factory
      */
     public function definition(): array
     {
-        $user = User::all();
-
         return [
             'title' => fake()->title,
             'body' => fake()->paragraph(),
-            'user_id' => $user->random()->id,
+            'user_id' => User::factory()->create()->id,
             'created_at' => now(),
             'updated_at' => now(),
         ];

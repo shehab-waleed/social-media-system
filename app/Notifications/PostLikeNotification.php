@@ -3,6 +3,7 @@
 namespace App\Notifications;
 
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 
@@ -11,13 +12,14 @@ class PostLikeNotification extends Notification
     use Queueable;
 
     protected $postId;
-
+    protected User $user;
     /**
      * Create a new notification instance.
      */
-    public function __construct($postId)
+    public function __construct($postId , User $user)
     {
         $this->postId = $postId;
+        $this->user = $user;
     }
 
     /**
@@ -42,7 +44,7 @@ class PostLikeNotification extends Notification
         return [
             'post_id' => $post->id,
             'post_author_id' => $post->author->id,
-            'message' => ucwords(auth()->user()->first_name).', Liked your post !',
+            'message' => ucwords($this->user->first_name).', Liked your post !',
         ];
     }
 }

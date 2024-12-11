@@ -19,7 +19,7 @@ class LikePostAction
             'user_id' => $user->id,
         ]);
         $like->likedAt = 'Post';
-        Notification::send($post->author, new PostLikeNotification($post->id));
+        Notification::send($post->author, new PostLikeNotification($post->id , $user));
 
         return $like;
     }
