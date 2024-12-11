@@ -4,9 +4,19 @@ namespace Tests\Unit\Helpers;
 
 use App\Helpers\ApiResponse;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 
 class ApiResponseTest extends TestCase
 {
+    public function test_it_has_send_abstract_method()
+    {
+        $reflection = new ReflectionClass(ApiResponse::class);
+        $method = $reflection->getMethod('send');
+
+        $this->assertTrue($reflection->hasMethod('send'));
+        $this->assertTrue($method->isStatic());
+        $this->assertTrue($method->isPublic());
+    }
     public function test_it_should_return_a_valid_response_object_with_valid_data()
     {
         $data = [
