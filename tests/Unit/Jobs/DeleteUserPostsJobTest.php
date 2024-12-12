@@ -6,6 +6,7 @@ use App\Jobs\DeleteUserPosts;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use ReflectionClass;
 use Tests\TestCase;
@@ -67,5 +68,14 @@ class DeleteUserPostsJobTest extends TestCase
 
         $this->assertEquals(0 , $this->user->posts()->count());
         $this->assertEquals(3, $anotherUser->posts()->count());
+    }
+
+    public function test_it_accepts_valid_user_ids_only(){
+        $invalidUserId = 9999;
+        $job = new DeleteUserPosts($invalidUserId);
+
+        $this->assertThrows(function () use($job){
+            $job->handle();
+        },ModelNotFoundException::class , "No query results for model [App\Models\User] $invalidUserId");
     }
 }

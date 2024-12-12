@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -30,7 +31,8 @@ class DeleteUserPosts implements ShouldQueue
     public function handle(): void
     {
         //
+        $user = User::findOrFail($this->userId);
 
-        Post::where('user_id', $this->userId)->delete();
+        $user->posts()->delete();
     }
 }
