@@ -6,6 +6,7 @@ use App\Actions\PostActions\SharePostAction;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use ReflectionClass;
 use Tests\TestCase;
 
 class SharePostActionTest extends TestCase
@@ -23,6 +24,15 @@ class SharePostActionTest extends TestCase
         $this->user = User::factory()->create();
         $this->post = Post::factory()->create();
         $this->sharePostAction = new SharePostAction();
+    }
+
+    public function test_it_has_execute_method()
+    {
+        $reflection = new ReflectionClass($this->sharePostAction);
+        $executeMethod = $reflection->getMethod('execute');
+
+        $this->assertTrue($reflection->hasMethod('execute'));
+        $this->assertTrue($executeMethod->isPublic());
     }
 
     public function test_it_shares_the_user_post_with_new_author_successfully()
