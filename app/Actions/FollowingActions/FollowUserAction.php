@@ -12,7 +12,6 @@ class FollowUserAction
     {
         if (! $user->following()->pluck('followed_id')->contains($followedUser->id)) {
             $user->following()->attach($followedUser->id);
-            Notification::send($followedUser, new FollowingNotification($user));
         }
     }
 }

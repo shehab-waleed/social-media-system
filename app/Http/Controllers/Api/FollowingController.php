@@ -8,8 +8,10 @@ use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FollowingResource;
 use App\Models\User;
+use App\Notifications\FollowingNotification;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Route;
 
 class FollowingController extends Controller
@@ -32,6 +34,7 @@ class FollowingController extends Controller
     public function store(User $followedUser, FollowUserAction $followUserAction)
     {
         $followUserAction->execute(Auth::user(), $followedUser);
+        Notification::send($followedUser, new FollowingNotification(Auth::user()));
 
         return ApiResponse::send(JsonResponse::HTTP_CREATED, 'User followed successfully . ', ['is_followed' => true]);
     }
