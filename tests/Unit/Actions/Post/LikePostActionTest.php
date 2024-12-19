@@ -21,6 +21,7 @@ class LikePostActionTest extends TestCase
     public function setup(): void
     {
         parent::setup();
+        \Notification::fake();
 
         $this->user = User::factory()->create();
         $this->post = Post::factory()->create();
@@ -42,8 +43,6 @@ class LikePostActionTest extends TestCase
     }
 
     public function test_it_notify_the_post_author_when_the_post_is_liked(){
-        \Notification::fake();
-
         (new LikePostAction())->execute($this->post, $this->user);
 
         \Notification::assertCount(1);
