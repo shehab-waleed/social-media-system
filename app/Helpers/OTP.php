@@ -22,16 +22,19 @@ class OTP
         ]);
     }
 
-    public static function verify(int $providedOtp)
+    public static function verify(
+        int $providedOtp,
+        User $user
+    )
     {
-        $userOtp = Auth::user()->otp;
+        $userOtp = $user->otp;
 
         if (! $userOtp || $providedOtp != $userOtp->code || now()->gt($userOtp->expires_at)) {
             return false;
         }
 
-        Auth::user()->email_verified_at = now();
-        Auth::user()->save();
+        $user->email_verified_at = now();
+        $user->save();
 
         $userOtp->delete();
 

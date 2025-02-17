@@ -18,7 +18,7 @@ class OtpController extends Controller
             'otp' => ['required', 'digits:4'],
         ]);
 
-        if (! OTP::verify($data['otp'])) {
+        if (! OTP::verify($data['otp'], $request->user())) {
             return ApiResponse::send(JsonResponse::HTTP_UNPROCESSABLE_ENTITY, 'There is an error in OTP code', ['is_verified' => false]);
         }
 
