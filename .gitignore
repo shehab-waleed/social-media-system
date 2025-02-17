@@ -1,5 +1,5 @@
 .env
-vendor
+/vendor
 .idea
 .idea/*
 .phpunit.result.cache
